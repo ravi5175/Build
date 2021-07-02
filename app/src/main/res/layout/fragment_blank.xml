@@ -3,12 +3,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.BlankFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+ <LinearLayout
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:layout_marginHorizontal="40dp"
+     android:orientation="vertical"
+     android:layout_gravity="center">
+
+     <com.mukesh.OtpView
+         android:id="@+id/otp_view"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:inputType="number"
+         android:itemBackground="@color/white"
+         android:textColor="#646464"
+         app:OtpItemCount="6"
+         app:OtpLineColor="#5870EA"
+         app:OtpItemWidth="40dp"
+         app:OtpItemRadius="2dp"
+         app:OtpViewType="rectangle"/>
+
+     <Button
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Validate"
+         android:textStyle="bold"
+         android:layout_gravity="end"/>
+
+ </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="200dp"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="otp will expire in :"
+            android:textColor="#646464"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="00"
+            android:textColor="#646464"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="Resend OTP"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
 </FrameLayout>

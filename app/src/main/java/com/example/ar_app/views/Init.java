@@ -10,9 +10,10 @@ import com.example.ar_app.databinding.ActivityInitBinding;
 
 public class Init extends AppCompatActivity {
 
-    private ActivityInitBinding binding;
-    private FragmentManager fragmentManager;
-    private WelcomeScreen fWelcomeScreen;
+    ActivityInitBinding binding;
+    FragmentManager fragmentManager = getSupportFragmentManager();
+    WelcomeScreen fWelcomeScreen;
+    BlankFragment fAuth;
 
 
     @Override
@@ -21,17 +22,24 @@ public class Init extends AppCompatActivity {
         binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        fragmentManager = getSupportFragmentManager();
-        fWelcomeScreen = new WelcomeScreen(this);
+        //fragmentManager = getSupportFragmentManager();
+        fWelcomeScreen = WelcomeScreen.getInstance(this);
+        fAuth = new BlankFragment();
+
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(),fWelcomeScreen, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("welcome")
+                .addToBackStack("fwelcome")
                 .commit();
-
-
     }
 
+    public void transaction_to_Auth(){
+        fragmentManager.beginTransaction()
+                .replace(binding.initFrameLayout.getId(), fAuth, null)
+                .setReorderingAllowed(true)
+                .addToBackStack("fauth")
+                .commit();
+    }
 
 
 

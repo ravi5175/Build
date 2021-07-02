@@ -17,7 +17,11 @@ public class WelcomeScreen extends Fragment {
     private FragmentWelcomeScreenBinding binding;
     private Init initContext;
 
-    public void WelcomeScreen(Init context){}
+    public static WelcomeScreen getInstance(Init context){
+        WelcomeScreen welcomeScreen = new WelcomeScreen();
+        welcomeScreen.initContext = context;
+        return welcomeScreen;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
@@ -33,13 +37,17 @@ public class WelcomeScreen extends Fragment {
             public void onClick(View v) {
                 String phoneNumber = binding.phoneNumber.getText().toString();
                 if(phoneNumber.length() == 0){
-                    Toast.makeText(getContext(),"please enter phone number",Toast.LENGTH_SHORT).show();
+                    generateToast("Please fill your phone number");
                 }else if (phoneNumber.length() != 10){
-                    Toast.makeText(getContext(),"phone number invalid",Toast.LENGTH_SHORT).show();
+                    generateToast("Invalid Phone Number");
                 }else{
-
+                    initContext.transaction_to_Auth();
                 }
             }
         });
+    }
+
+    private void generateToast(String message){
+        Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }
 }
