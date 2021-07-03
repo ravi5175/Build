@@ -1,19 +1,26 @@
 package com.example.ar_app.views;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ar_app.databinding.ActivityInitBinding;
+import com.example.ar_app.viewmodels.GlobalSharedViewModel;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Init extends AppCompatActivity {
 
     ActivityInitBinding binding;
+
     FragmentManager fragmentManager = getSupportFragmentManager();
     WelcomeScreen fWelcomeScreen;
-    BlankFragment fAuth;
+    OTPAuth fOTPAuth;
+
+    GlobalSharedViewModel globalViewModel;
+
+    FirebaseAuth FAuth;
 
 
     @Override
@@ -22,9 +29,15 @@ public class Init extends AppCompatActivity {
         binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        globalViewModel = new ViewModelProvider(this).get(GlobalSharedViewModel.class);
+        FAuth = FirebaseAuth.getInstance();
+
+        globalViewModel.generateFirebaseAuth(FAuth);
+        globalViewModel.InitActivityContext(this);
+
         //fragmentManager = getSupportFragmentManager();
         fWelcomeScreen = WelcomeScreen.getInstance(this);
-        fAuth = new BlankFragment();
+        fOTPAuth = new OTPAuth();
 
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(),fWelcomeScreen, null)
@@ -35,7 +48,7 @@ public class Init extends AppCompatActivity {
 
     public void transaction_to_Auth(){
         fragmentManager.beginTransaction()
-                .replace(binding.initFrameLayout.getId(), fAuth, null)
+                .replace(binding.initFrameLayout.getId(), fOTPAuth, null)
                 .setReorderingAllowed(true)
                 .addToBackStack("fauth")
                 .commit();

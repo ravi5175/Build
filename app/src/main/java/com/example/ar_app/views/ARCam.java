@@ -6,11 +6,11 @@ import android.os.Bundle;
 
 import com.example.ar_app.R;
 
-public class Auth extends AppCompatActivity {
+public class ARCam extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_auth);
+        setContentView(R.layout.activity_arcam);
     }
 }
