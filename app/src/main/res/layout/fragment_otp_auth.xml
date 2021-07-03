@@ -7,28 +7,29 @@
     tools:context=".views.OTPAuth">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/back_to_welcome_screen"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="@drawable/ic_back_button"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="40dp"/>
+        android:layout_marginStart="30dp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="130dp"
         android:layout_gravity="center_horizontal"
-        android:text="sending OTP on"
+        android:text="sending OTP on your device"
         android:textColor="#646464"
-        android:textStyle="bold"/>
+        android:textStyle="bold|italic"/>
 
     <TextView
         android:id="@+id/displayPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="150dp"
         android:layout_gravity="center_horizontal"
-        android:text="sending OTP on"
+        android:text="display phone number"
         android:textColor="#646464"
         android:textStyle="bold"/>
 
@@ -36,6 +37,7 @@
      android:layout_width="wrap_content"
      android:layout_height="wrap_content"
      android:layout_marginHorizontal="40dp"
+     android:layout_marginBottom="70dp"
      android:orientation="vertical"
      android:layout_gravity="center">
 
@@ -55,10 +57,12 @@
  </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/otp_timer_layout"
+        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="200dp"
+        android:layout_marginTop="100dp"
         android:orientation="vertical">
 
         <TextView
@@ -66,24 +70,39 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:text="otp will expire in :"
+            android:textStyle="bold"
             android:textColor="#646464"/>
 
         <TextView
+            android:id="@+id/otp_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="00"
+            android:fontFamily="@font/black_ops_one"
+            android:text="60"
             android:textColor="#646464"
-            android:textStyle="bold"
-            android:textSize="20sp"/>
+            android:textSize="30sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/resend_otp"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/ic_otp_resend_button_disabled"
             android:textStyle="bold"/>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/otp_status"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="80dp"
+        android:layout_marginHorizontal="40dp"
+        android:text="otp status"
+        android:textColor="#646464"/>
+
 
 </FrameLayout>

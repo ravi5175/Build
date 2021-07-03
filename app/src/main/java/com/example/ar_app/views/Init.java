@@ -1,5 +1,6 @@
 package com.example.ar_app.views;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,10 @@ public class Init extends AppCompatActivity {
         globalViewModel.generateFirebaseAuth(FAuth);
         globalViewModel.InitActivityContext(this);
 
+        if(FAuth.getCurrentUser()!=null){
+            intentARcam();
+        }
+
         //fragmentManager = getSupportFragmentManager();
         fWelcomeScreen = WelcomeScreen.getInstance(this);
         fOTPAuth = new OTPAuth();
@@ -42,7 +47,7 @@ public class Init extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(),fWelcomeScreen, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("fwelcome")
+                .addToBackStack("fWelcome")
                 .commit();
     }
 
@@ -50,8 +55,21 @@ public class Init extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fOTPAuth, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("fauth")
+                .addToBackStack("fAuth")
                 .commit();
+    }
+
+    public void transaction_to_Welcome(){
+        fragmentManager.beginTransaction()
+                .replace(binding.initFrameLayout.getId(), fWelcomeScreen, null)
+                .setReorderingAllowed(true)
+                .addToBackStack("fWelcome")
+                .commit();
+    }
+
+    public void intentARcam(){
+        startActivity(new Intent(this,ARCam.class));
+        finish();
     }
 
 
