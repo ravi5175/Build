@@ -3,25 +3,18 @@ package com.example.ar_app.views;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.ar_app.R;
 import com.example.ar_app.databinding.FragmentOtpAuthBinding;
-import com.example.ar_app.databinding.FragmentWelcomeScreenBinding;
-import com.example.ar_app.viewmodels.GlobalSharedViewModel;
+import com.example.ar_app.viewmodels.InitViewModel;
 import com.example.ar_app.viewmodels.OTPAuthViewModel;
-import com.example.ar_app.viewmodels.OTPSharedViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -34,9 +27,6 @@ import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.mukesh.OnOtpCompletionListener;
 
-import java.util.Locale;
-import java.util.Timer;
-import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 public class OTPAuth extends Fragment {
@@ -44,12 +34,9 @@ public class OTPAuth extends Fragment {
     FragmentOtpAuthBinding binding;
 
     OTPAuthViewModel otpAuthViewModel;
-    OTPSharedViewModel otpSharedViewModel;
-    GlobalSharedViewModel globalViewModel;
+    InitViewModel initViewModel;
 
     String otpVerificationId;
-
-    long timerDuration = TimeUnit.MINUTES.toMillis(1);
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
@@ -62,10 +49,9 @@ public class OTPAuth extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         otpAuthViewModel = new ViewModelProvider(requireActivity()).get(OTPAuthViewModel.class);
-        otpSharedViewModel = new ViewModelProvider(requireActivity()).get(OTPSharedViewModel.class);
-        globalViewModel = new ViewModelProvider(getActivity()).get(GlobalSharedViewModel.class);
+        initViewModel = new ViewModelProvider(requireActivity()).get(InitViewModel.class);
 
-        binding.displayPhoneNumber.setText(otpSharedViewModel.getPhoneNumber().getValue());
+        binding.displayPhoneNumber.setText(initViewModel.getPhoneNumber().getValue());
 
         binding.otpView.setOtpCompletionListener(new OnOtpCompletionListener() {
             @Override public void onOtpCompleted(String otp) {
@@ -77,8 +63,7 @@ public class OTPAuth extends Fragment {
         binding.resendOtp.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //globalViewModel.getFirebaseAuth().signOut();
-                initiateOTP(otpSharedViewModel.getPhoneNumber().getValue());
+                initiateOTP(initViewModel.getPhoneNumber().getValue());
                 Toast.makeText(requireContext(), "successfully signed out", Toast.LENGTH_SHORT).show();
             }
         });
@@ -86,7 +71,7 @@ public class OTPAuth extends Fragment {
         binding.backToWelcomeScreen.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                globalViewModel.getInitContext().transaction_to_Welcome();
+                initViewModel.getInitContext().transaction_to_Welcome();
             }
         });
 
@@ -98,7 +83,7 @@ public class OTPAuth extends Fragment {
         });
 
         if(!otpAuthViewModel.isTimerRunning.getValue()){
-            initiateOTP(otpSharedViewModel.getPhoneNumber().getValue());
+            initiateOTP(initViewModel.getPhoneNumber().getValue());
         }else{
             binding.otpTimerLayout.setVisibility(View.VISIBLE);
         }
@@ -109,10 +94,10 @@ public class OTPAuth extends Fragment {
         binding.otpStatus.setVisibility(View.VISIBLE);
         otpStatus("sending OTP");
         PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(globalViewModel.getFirebaseAuth())
+                PhoneAuthOptions.newBuilder(initViewModel.getFirebaseAuth())
                         .setPhoneNumber(phoneNumber)       // Phone number to verify
                         .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(globalViewModel.getInitContext())                 // Activity (for callback binding)
+                        .setActivity(initViewModel.getInitContext())                 // Activity (for callback binding)
                         .setCallbacks(callbacks())          // OnVerificationStateChangedCallbacks
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
@@ -153,7 +138,7 @@ public class OTPAuth extends Fragment {
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        globalViewModel.getFirebaseAuth().signInWithCredential(credential)
+        initViewModel.getFirebaseAuth().signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -163,6 +148,7 @@ public class OTPAuth extends Fragment {
 
                             FirebaseUser user = task.getResult().getUser();
                             otpStatus("Logging In...");
+                            initViewModel.getInitContext().transaction_to_ARCam();
                             // Update UI
                         } else {
                             // Sign in failed, display a message and update the UI

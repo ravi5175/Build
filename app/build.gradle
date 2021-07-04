@@ -47,4 +47,12 @@ dependencies {
 
     implementation 'com.hbb20:ccp:2.4.7'
     implementation 'com.github.mukeshsolanki:android-otpview-pinview:2.1.2'
+
+    /* Sceneform : AR library
+       NOTE : standard versions for
+       sceneform-ux is 1.15.0
+       assets is 1.15.0*/
+
+    implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.15.0'
+    implementation 'com.google.ar.sceneform:assets:1.15.0'
 }

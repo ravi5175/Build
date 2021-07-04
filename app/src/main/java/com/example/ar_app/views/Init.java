@@ -1,25 +1,28 @@
 package com.example.ar_app.views;
 
-import android.content.Intent;
+import android.Manifest;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ar_app.databinding.ActivityInitBinding;
-import com.example.ar_app.viewmodels.GlobalSharedViewModel;
+import com.example.ar_app.viewmodels.InitViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Init extends AppCompatActivity {
 
     ActivityInitBinding binding;
 
-    FragmentManager fragmentManager = getSupportFragmentManager();
+    FragmentManager fragmentManager;
     WelcomeScreen fWelcomeScreen;
     OTPAuth fOTPAuth;
+    ARCam fARCam;
 
-    GlobalSharedViewModel globalViewModel;
+    InitViewModel initViewModel;
 
     FirebaseAuth FAuth;
 
@@ -29,26 +32,26 @@ public class Init extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        RunPermissionCheck();
 
-        globalViewModel = new ViewModelProvider(this).get(GlobalSharedViewModel.class);
+        initViewModel = new ViewModelProvider(this).get(InitViewModel.class);
         FAuth = FirebaseAuth.getInstance();
 
-        globalViewModel.generateFirebaseAuth(FAuth);
-        globalViewModel.InitActivityContext(this);
+        initViewModel.setFirebaseAuth(FAuth);
+        initViewModel.setInitContext(this);
 
+        fragmentManager = getSupportFragmentManager();
+
+        fARCam = new ARCam();
+        fWelcomeScreen = new WelcomeScreen();
+        fOTPAuth = new OTPAuth();
         if(FAuth.getCurrentUser()!=null){
-            intentARcam();
+            Log.d("user","user found");
+            transaction_to_ARCam();
+        }else{
+            transaction_to_Welcome();
         }
 
-        //fragmentManager = getSupportFragmentManager();
-        fWelcomeScreen = WelcomeScreen.getInstance(this);
-        fOTPAuth = new OTPAuth();
-
-        fragmentManager.beginTransaction()
-                .replace(binding.initFrameLayout.getId(),fWelcomeScreen, null)
-                .setReorderingAllowed(true)
-                .addToBackStack("fWelcome")
-                .commit();
     }
 
     public void transaction_to_Auth(){
@@ -67,13 +70,22 @@ public class Init extends AppCompatActivity {
                 .commit();
     }
 
-    public void intentARcam(){
-        startActivity(new Intent(this,ARCam.class));
-        finish();
+    public void transaction_to_ARCam(){
+        fragmentManager.beginTransaction()
+                .replace(binding.initFrameLayout.getId(), fARCam, null)
+                .setReorderingAllowed(true)
+                //.addToBackStack("fARCam")
+                .commit();
     }
 
-
-
-
+    private void RunPermissionCheck() {
+        String[] Permissions = {
+                Manifest.permission.INTERNET,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.CAMERA
+        };
+        ActivityCompat.requestPermissions(this,Permissions , 1);
+    }
 
 }
