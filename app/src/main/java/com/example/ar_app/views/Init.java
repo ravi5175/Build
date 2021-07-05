@@ -1,17 +1,22 @@
 package com.example.ar_app.views;
 
 import android.Manifest;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ar_app.databinding.ActivityInitBinding;
 import com.example.ar_app.viewmodels.InitViewModel;
 import com.google.firebase.auth.FirebaseAuth;
+
+import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
 public class Init extends AppCompatActivity {
 
