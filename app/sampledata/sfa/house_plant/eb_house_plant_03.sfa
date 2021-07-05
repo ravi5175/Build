@@ -1,0 +1,58 @@
+{
+  materials: [
+    {
+      name: 'blinn1SG',
+      parameters: [
+        {
+          baseColor: 'eb_house_plant_01_c',
+        },
+        {
+          baseColorTint: [
+            1,
+            1,
+            1,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/house_plant/eb_house_plant_03.obj',
+    name: 'eb_house_plant_03',
+    recenter: 'root',
+    scale: 0.027300999999999999,
+  },
+  samplers: [
+    {
+      file: 'sampledata/house_plant/eb_house_plant_01_c.tga',
+      name: 'eb_house_plant_01_c',
+      pipeline_name: 'eb_house_plant_01_c.tga',
+    },
+    {
+      file: 'sampledata/house_plant/eb_house_plant_01_n.tga',
+      name: 'eb_house_plant_01_n',
+      params: {
+        usage_type: 'Data',
+      },
+      pipeline_name: 'eb_house_plant_01_n.tga -bm 1',
+    },
+  ],
+  version: '0.54:2',
+}

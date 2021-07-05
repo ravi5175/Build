@@ -36,8 +36,6 @@ public class OTPAuth extends Fragment {
     OTPAuthViewModel otpAuthViewModel;
     InitViewModel initViewModel;
 
-    String otpVerificationId;
-
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
         binding = FragmentOtpAuthBinding.inflate(inflater, container, false);
@@ -55,7 +53,7 @@ public class OTPAuth extends Fragment {
 
         binding.otpView.setOtpCompletionListener(new OnOtpCompletionListener() {
             @Override public void onOtpCompleted(String otp) {
-                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpVerificationId,otp);
+                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpAuthViewModel.verificationId,otp);
                  signInWithPhoneAuthCredential(credential);
             }
         });
@@ -131,7 +129,7 @@ public class OTPAuth extends Fragment {
                 otpStatus("OTP sent");
                 binding.otpTimerLayout.setVisibility(View.VISIBLE);
                 otpAuthViewModel.timerStart();
-                otpVerificationId = verificationId;
+                otpAuthViewModel.verificationId = verificationId;
                 //mResendToken = token;
             }
         };

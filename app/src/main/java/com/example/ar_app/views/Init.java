@@ -4,6 +4,7 @@ import android.Manifest;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,7 +57,6 @@ public class Init extends AppCompatActivity {
         }else{
             transaction_to_Welcome();
         }
-
     }
 
     public void transaction_to_Auth(){

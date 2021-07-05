@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 public class OTPAuthViewModel extends ViewModel {
     public static OTPAuthViewModel instance;
 
+    public String verificationId = "";
+
     CountDownTimer timer;
 
     public MutableLiveData<String> countDown = new MutableLiveData<String>();

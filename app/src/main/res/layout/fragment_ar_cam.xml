@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.ARAPP"
     tools:context=".views.ARCam">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/arFragment"
@@ -31,6 +36,15 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/ic_ar_cam"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:text="Capture"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"/>
+
     <ImageView
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -39,6 +53,16 @@
         android:layout_marginBottom="30dp"
         android:background="@drawable/ic_gallery_button"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="22dp"
+        android:text="Gallery"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"/>
+
     <ImageView
         android:id="@+id/arcam_Settings"
         android:layout_width="30dp"
@@ -46,6 +70,16 @@
         android:layout_gravity="bottom|start"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/ic_settings_menu"/>
+        android:background="@drawable/log_out_button"/>
 
-</FrameLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="22dp"
+        android:text="Gallery"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"/>
+    </FrameLayout>
+</LinearLayout>

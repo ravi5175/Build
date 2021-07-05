@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.ar_app.R;
 import com.example.ar_app.models.ARCamRecyclerChildModel;
+import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
 
