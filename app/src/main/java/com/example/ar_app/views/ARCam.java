@@ -1,34 +1,44 @@
 package com.example.ar_app.views;
 
-import android.app.Application;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.example.ar_app.R;
 import com.example.ar_app.adapters.ARCamRecyclerAdapter;
+import com.example.ar_app.custom_classes.CustomARFragment;
 import com.example.ar_app.databinding.FragmentArCamBinding;
-
+import com.example.ar_app.models.ImageDownloadUrl;
 import com.example.ar_app.viewmodels.ARCamViewModel;
 import com.example.ar_app.viewmodels.InitViewModel;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.ar.core.Anchor;
-import com.google.ar.core.HitResult;
-import com.google.ar.core.Plane;
 import com.google.ar.sceneform.AnchorNode;
+import com.google.ar.sceneform.ArSceneView;
 import com.google.ar.sceneform.rendering.ModelRenderable;
-import com.google.ar.sceneform.ux.ArFragment;
-import com.google.ar.sceneform.ux.BaseArFragment;
 import com.google.ar.sceneform.ux.TransformableNode;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Calendar;
 
 
 public class ARCam extends Fragment {
@@ -40,7 +50,10 @@ public class ARCam extends Fragment {
     LinearLayoutManager arCamRecyclerLayoutManager;
     ARCamRecyclerAdapter arCamRecyclerAdapter;
 
-    ArFragment arCamFragment;
+    CustomARFragment arCamFragment;
+
+    DatabaseReference database = FirebaseDatabase.getInstance().getReference("Image");
+    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,16 +76,20 @@ public class ARCam extends Fragment {
             }
         });
 
+
+
         arCamRecyclerAdapter = new ARCamRecyclerAdapter(arCamViewModel.recyclerViewData.getValue());
         arCamRecyclerLayoutManager = new LinearLayoutManager(initViewModel.getInitContext(),LinearLayoutManager.HORIZONTAL,false);
         binding.arCamRecycler.setLayoutManager(arCamRecyclerLayoutManager);
         binding.arCamRecycler.setAdapter(arCamRecyclerAdapter);
 
-        arCamFragment = (ArFragment)getChildFragmentManager().findFragmentById(R.id.arFragment);
+        arCamFragment = (CustomARFragment)getChildFragmentManager().findFragmentById(R.id.arFragment);
+
         arCamFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             Anchor anchor = hitResult.createAnchor();
+            arCamViewModel.anchorList.add(anchor);
             ModelRenderable.builder()
-                     .setSource(requireContext(), Uri.parse("house_plant.sfb"))
+                     .setSource(requireContext(), Uri.parse("toy_truck.sfb"))
                     .build()
                     .thenAccept(modelRenderable -> addModelToScene(anchor,modelRenderable))
                     .exceptionally(throwable ->{
@@ -80,6 +97,14 @@ public class ARCam extends Fragment {
                         return null;
                     });
         });
+
+        binding.arCamCapture.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                    takePhoto();
+            }
+        });
+
     }
 
     private void addModelToScene(Anchor anchor, ModelRenderable modelRenderable) {
@@ -91,4 +116,64 @@ public class ARCam extends Fragment {
         transformableNode.select();
     }
 
+
+    private void takePhoto() {
+        ArSceneView view = arCamFragment.getArSceneView();
+        final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+
+        // Create a handler thread to offload the processing of the image.
+        final HandlerThread handlerThread = new HandlerThread("PixelCopier");
+        handlerThread.start();
+
+        // Make the request to copy.
+        PixelCopy.request(view, bitmap, (copyResult) -> {
+            if (copyResult == PixelCopy.SUCCESS) {
+                //binding.captureArImage.setImageBitmap(bitmap);
+                uploadPhoto(bitmap);
+            } else {
+                Log.d("takePhoto","pixel copy failed");
+            }
+            handlerThread.quitSafely();
+        }, new Handler(handlerThread.getLooper()));
+    }
+
+    private void uploadPhoto(Bitmap bitmap){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        StorageReference uploadReference = storageRef.child("images/"+ Calendar.getInstance().getTimeInMillis() +".jpg");
+
+        UploadTask uploadTask = uploadReference.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(requireContext(),"upload unsuccessful",Toast.LENGTH_SHORT).show();
+                Log.d("Firebase Storage",exception.toString());
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(requireContext(),"upload successful",Toast.LENGTH_SHORT).show();
+                uploadReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("ref uri",uri.toString());
+                        ImageDownloadUrl imageDownloadUrl = new ImageDownloadUrl(uri.toString());
+                        String imageDownloadUrlId = database.push().getKey();
+                        Log.d("ref key",imageDownloadUrlId);
+                        database.child(imageDownloadUrlId).setValue(imageDownloadUrl);
+
+                    }
+                }).addOnFailureListener(new OnFailureListener(){
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(requireContext(),"rt database update FAILED",Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+    }
 }

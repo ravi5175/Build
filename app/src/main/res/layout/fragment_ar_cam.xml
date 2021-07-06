@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.ARAPP"
     tools:context=".views.ARCam">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
     <fragment
         android:id="@+id/arFragment"
-        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:name="com.example.ar_app.custom_classes.CustomARFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:theme="@style/Theme.ARAPP"/>
+
+    <ImageView
+        android:id="@+id/capture_ar_image"
+        android:layout_width="200dp"
+        android:layout_height="400dp"
+        android:layout_gravity="end"
+        android:background="#000000"
+        android:scaleType="fitXY"
+        android:elevation="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ar_cam_recycler"
@@ -30,6 +35,7 @@
         android:background="#60000000"/>
 
     <ImageView
+        android:id="@+id/ar_cam_capture"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="bottom|center_horizontal"
@@ -81,5 +87,4 @@
         android:text="Gallery"
         android:textColor="#FFFFFF"
         android:textSize="12sp"/>
-    </FrameLayout>
-</LinearLayout>
+</FrameLayout>

@@ -33,6 +33,9 @@ public class ARCamRecyclerAdapter extends RecyclerView.Adapter<ARCamRecyclerAdap
         ARCamRecyclerChildModel currentItem = data.get(position);
         holder.title.setText(currentItem.getAssetTitle());
         holder.image.setImageResource(currentItem.getAssetImageResource());
+        if(currentItem.isSelected){
+            //holder.
+        }
     }
 
     @Override

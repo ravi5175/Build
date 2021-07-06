@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.ar_app.R;
 import com.example.ar_app.models.ARCamRecyclerChildModel;
+import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class ARCamViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<ARCamRecyclerChildModel>> recyclerViewData = new MutableLiveData<ArrayList<ARCamRecyclerChildModel>>(new ArrayList<ARCamRecyclerChildModel>());
+    public ArrayList<Anchor> anchorList = new ArrayList<Anchor>();
 
     public ARCamViewModel(){
         if(this.recyclerViewData.getValue().isEmpty()){
