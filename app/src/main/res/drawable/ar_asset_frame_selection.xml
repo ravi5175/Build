@@ -9,8 +9,8 @@
 
     <item android:state_selected="false">
         <shape>
-            <stroke android:width="2dp" android:color="#02CC0A"/>
-            <corners android:bottomLeftRadius="8dp" android:bottomRightRadius="8dp"/>
+            <stroke android:width="2dp" android:color="#FFFFFF"/>
+            <corners android:bottomLeftRadius="0dp" android:bottomRightRadius="0dp"/>
         </shape>
     </item>
 </selector>

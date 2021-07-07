@@ -12,14 +12,45 @@
         android:layout_height="match_parent"
         android:theme="@style/Theme.ARAPP"/>
 
-    <ImageView
-        android:id="@+id/capture_ar_image"
-        android:layout_width="200dp"
-        android:layout_height="400dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#60000000"
+        android:layout_gravity="center_vertical"/>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="#60000000"
+        android:layout_marginBottom="110dp"
+        android:layout_gravity="center_horizontal"/>
+
+    <LinearLayout
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_gravity="end"
-        android:background="#000000"
-        android:scaleType="fitXY"
-        android:elevation="10dp"/>
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ar_cam_mode_layout"
+        android:padding="4dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="4dp"
+            android:text="mode: "
+            android:textColor="#FFFFFF"
+            android:textSize="10sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CAPTURE"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
+            android:textStyle="bold"/>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ar_cam_recycler"
@@ -34,57 +65,36 @@
         android:layout_gravity="bottom"
         android:background="#60000000"/>
 
-    <ImageView
-        android:id="@+id/ar_cam_capture"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/ic_ar_cam"/>
-
-    <TextView
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="10dp"
-        android:text="Capture"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"/>
-
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="30dp"
+        android:layout_gravity="bottom"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/ic_gallery_button"/>
+        android:orientation="horizontal">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="10dp"
-        android:layout_marginEnd="22dp"
-        android:text="Gallery"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"/>
+        <ImageView
+            android:id="@+id/ar_cam_capture"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/ic_ar_cam"/>
 
-    <ImageView
-        android:id="@+id/arcam_Settings"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="bottom|start"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="30dp"
-        android:background="@drawable/log_out_button"/>
+        <ImageView
+            android:id="@+id/gallery_button"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/ic_gallery_button"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="22dp"
-        android:text="Gallery"
-        android:textColor="#FFFFFF"
-        android:textSize="12sp"/>
+
+        <ImageView
+            android:id="@+id/arcam_Settings"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center_vertical|start"
+            android:layout_marginStart="30dp"
+            android:background="@drawable/log_out_button"/>
+
+    </FrameLayout>
 </FrameLayout>

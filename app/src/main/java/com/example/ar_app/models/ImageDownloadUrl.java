@@ -3,6 +3,7 @@ package com.example.ar_app.models;
 public class ImageDownloadUrl {
     public String imageUrl;
 
+    public ImageDownloadUrl(){};
     public ImageDownloadUrl(String url){
         this.imageUrl = url;
     }

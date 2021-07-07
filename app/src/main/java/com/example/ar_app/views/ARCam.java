@@ -1,6 +1,8 @@
 package com.example.ar_app.views;
 
+import android.app.Dialog;
 import android.graphics.Bitmap;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.PixelCopy;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,8 +30,14 @@ import com.example.ar_app.viewmodels.InitViewModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.ar.core.Anchor;
+import com.google.ar.core.Pose;
+import com.google.ar.core.Session;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
+import com.google.ar.sceneform.Camera;
+import com.google.ar.sceneform.Node;
+import com.google.ar.sceneform.collision.Ray;
+import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.TransformableNode;
 import com.google.firebase.database.DatabaseReference;
@@ -52,8 +61,12 @@ public class ARCam extends Fragment {
 
     CustomARFragment arCamFragment;
 
-    DatabaseReference database = FirebaseDatabase.getInstance().getReference("Image");
+    DatabaseReference database = FirebaseDatabase.getInstance("https://ar-app-11eb0-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Image");
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+
+
+
+    Session session = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,8 +84,9 @@ public class ARCam extends Fragment {
         binding.arcamSettings.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                initViewModel.getFirebaseAuth().signOut();
-                initViewModel.getInitContext().transaction_to_Welcome();
+                //initViewModel.getFirebaseAuth().signOut();
+                //initViewModel.getInitContext().transaction_to_Welcome();
+                showDialog();
             }
         });
 
@@ -84,8 +98,12 @@ public class ARCam extends Fragment {
         binding.arCamRecycler.setAdapter(arCamRecyclerAdapter);
 
         arCamFragment = (CustomARFragment)getChildFragmentManager().findFragmentById(R.id.arFragment);
+        arCamFragment.getPlaneDiscoveryController().hide();
+        arCamFragment.getPlaneDiscoveryController().setInstructionView(null);
+        arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(false);
 
-        arCamFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
+
+        /*arCamFragment.setOnTapArPlaneListener((hitResult, plane, motionEvent) -> {
             Anchor anchor = hitResult.createAnchor();
             arCamViewModel.anchorList.add(anchor);
             ModelRenderable.builder()
@@ -96,15 +114,22 @@ public class ARCam extends Fragment {
                         Toast.makeText(requireActivity(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
                         return null;
                     });
-        });
+        });*/
 
         binding.arCamCapture.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                    takePhoto();
+                   // takePhoto();
+                placeModel();
             }
         });
 
+        binding.galleryButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                initViewModel.getInitContext().transaction_to_Gallery();
+            }
+        });
     }
 
     private void addModelToScene(Anchor anchor, ModelRenderable modelRenderable) {
@@ -114,6 +139,42 @@ public class ARCam extends Fragment {
         transformableNode.setRenderable(modelRenderable);
         arCamFragment.getArSceneView().getScene().addChild(anchorNode);
         transformableNode.select();
+    }
+
+    private void placeModel(){
+        ModelRenderable.builder()
+                .setSource(requireContext(), Uri.parse("toy_truck.sfb"))
+                .build()
+                .thenAccept(modelRenderable -> addModelOnClick(modelRenderable))
+                .exceptionally(throwable ->{
+                    Toast.makeText(requireActivity(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
+                    return null;
+                });
+    }
+
+    private void addModelOnClick(ModelRenderable modelRenderable){
+        /*float[] position = {0,0,-1};
+        float[] rotation = {0,0,0,1};
+        session = arCamFragment.getArSceneView().getSession();
+        Anchor anchor = session.createAnchor(new Pose(position,rotation));
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        //anchorNode.setRenderable(modelRenderable);
+        //anchorNode.setParent(arCamFragment.getArSceneView().getScene());
+        TransformableNode transformableNode = new TransformableNode(arCamFragment.getTransformationSystem());
+        transformableNode.setParent(anchorNode);
+        transformableNode.setRenderable(modelRenderable);
+        arCamFragment.getArSceneView().getScene().addChild(anchorNode);
+        transformableNode.select();*/
+
+        Node node = new Node();
+        node.setParent(arCamFragment.getArSceneView().getScene());
+        node.setRenderable(modelRenderable);
+        Camera camera = arCamFragment.getArSceneView().getScene().getCamera();
+        Ray ray = camera.screenPointToRay(1080/2f,2480/2f);
+        Vector3 newPosition = ray.getPoint(1f);
+        node.setLocalPosition(newPosition);
+
+
     }
 
 
@@ -175,5 +236,13 @@ public class ARCam extends Fragment {
             }
         });
 
+    }
+
+    private void showDialog(){
+        Dialog dialog = new Dialog(requireContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.settings_dialog_layout);
+        dialog.show();
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
     }
 }

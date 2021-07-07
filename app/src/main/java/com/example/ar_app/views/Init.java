@@ -27,6 +27,7 @@ public class Init extends AppCompatActivity {
     WelcomeScreen fWelcomeScreen;
     OTPAuth fOTPAuth;
     ARCam fARCam;
+    Gallery fGallery;
 
     InitViewModel initViewModel;
 
@@ -51,6 +52,8 @@ public class Init extends AppCompatActivity {
         fARCam = new ARCam();
         fWelcomeScreen = new WelcomeScreen();
         fOTPAuth = new OTPAuth();
+        fGallery = new Gallery();
+
         if(FAuth.getCurrentUser()!=null){
             Log.d("user","user found");
             transaction_to_ARCam();
@@ -79,7 +82,15 @@ public class Init extends AppCompatActivity {
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fARCam, null)
                 .setReorderingAllowed(true)
-                //.addToBackStack("fARCam")
+                .addToBackStack("fARCam")
+                .commit();
+    }
+
+    public void transaction_to_Gallery(){
+        fragmentManager.beginTransaction()
+                .replace(binding.initFrameLayout.getId(), fGallery, null)
+                .setReorderingAllowed(true)
+                .addToBackStack("fGallery")
                 .commit();
     }
 
