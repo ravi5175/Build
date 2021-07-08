@@ -1,9 +1,9 @@
-package com.example.ar_app.viewmodels;
+package com.example.ar_app.viewmodels.activities;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.ar_app.views.Init;
+import com.example.ar_app.views.activities.Init;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class InitViewModel extends ViewModel {

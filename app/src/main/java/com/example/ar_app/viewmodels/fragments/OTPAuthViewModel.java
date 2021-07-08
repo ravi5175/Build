@@ -1,7 +1,6 @@
-package com.example.ar_app.viewmodels;
+package com.example.ar_app.viewmodels.fragments;
 
 import android.os.CountDownTimer;
-import android.widget.Toast;
 
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;

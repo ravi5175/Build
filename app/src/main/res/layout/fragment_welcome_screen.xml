@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.MaterialComponents.NoActionBar"
-    tools:context=".views.WelcomeScreen">
+    tools:context=".views.fragments.WelcomeScreen">
 
     <TextView
         android:id="@+id/textView"

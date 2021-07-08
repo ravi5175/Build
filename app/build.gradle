@@ -65,3 +65,23 @@ sceneform.asset("sampledata/toy_truck/camion jugete.obj", // 'Source Asset Path'
         'default',                    // 'Material Path' specified during import.
         'sampledata/sfa/toy_truck/camion jugete.sfa', // '.sfa Output Path' specified during import.
         'src/main/assets/toy_truck')      // '.sfb Output Path' specified during import.
+
+sceneform.asset("sampledata/larvitar/larvitar.obj",
+        'default',
+        'sampledata/sfa/larvitar/larvitar.sfa',
+        'src/main/assets/larvitar')
+
+sceneform.asset("sampledata/bulbasaur/bulbasaur.obj",
+        'default',
+        'sampledata/sfa/bulbasaur/bulbasaur.sfa',
+        'src/main/assets/bulbasaur')
+
+sceneform.asset("sampledata/grass1/grass1.obj",
+        'default',
+        'sampledata/sfa/grass1/grass1.sfa',
+        'src/main/assets/grass1')
+
+sceneform.asset("sampledata/grass_patch/10450_Rectangular_Grass_Patch_v1_iterations-2.obj",
+        'default',
+        'sampledata/sfa/grass_patch/10450_Rectangular_Grass_Patch_v1_iterations-2.sfa',
+        'src/main/assets/grass_patch')

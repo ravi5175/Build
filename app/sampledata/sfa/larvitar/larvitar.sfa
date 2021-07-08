@@ -1,0 +1,143 @@
+{
+  materials: [
+    {
+      name: 'Material__191',
+      parameters: [
+        {
+          baseColor: 'pm0246_00_Eye1',
+        },
+        {
+          baseColorTint: [
+            0.80000000000000004,
+            0.80000000000000004,
+            0.80000000000000004,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+    {
+      name: 'Material__192',
+      parameters: [
+        {
+          baseColor: 'pm0246_00_Mouth1',
+        },
+        {
+          baseColorTint: [
+            0.80000000000000004,
+            0.80000000000000004,
+            0.80000000000000004,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+    {
+      name: 'Material__193',
+      parameters: [
+        {
+          baseColor: 'pm0246_00_Body1',
+        },
+        {
+          baseColorTint: [
+            0.80000000000000004,
+            0.80000000000000004,
+            0.80000000000000004,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+    {
+      name: 'Material__194',
+      parameters: [
+        {
+          baseColor: 'pm0246_00_Iris1',
+        },
+        {
+          baseColorTint: [
+            0.80000000000000004,
+            0.80000000000000004,
+            0.80000000000000004,
+            1,
+          ],
+        },
+        {
+          metallic: 0,
+        },
+        {
+          roughness: 1,
+        },
+        {
+          opacity: null,
+        },
+      ],
+      source: 'build/sceneform_sdk/default_materials/obj_material.sfm',
+    },
+  ],
+  model: {
+    attributes: [
+      'Position',
+      'TexCoord',
+      'Orientation',
+    ],
+    collision: {},
+    file: 'sampledata/larvitar/larvitar.obj',
+    name: 'larvitar',
+    recenter: 'root',
+    scale: 0.93013000000000001,
+  },
+  samplers: [
+    {
+      file: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Iris1.png',
+      name: 'pm0246_00_Iris1',
+      pipeline_name: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Iris1.png',
+    },
+    {
+      file: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Body1.png',
+      name: 'pm0246_00_Body1',
+      pipeline_name: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Body1.png',
+    },
+    {
+      file: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Mouth1.png',
+      name: 'pm0246_00_Mouth1',
+      pipeline_name: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Mouth1.png',
+    },
+    {
+      file: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Eye1.png',
+      name: 'pm0246_00_Eye1',
+      pipeline_name: '/home/monarch5175/Downloads/AR_Resources/larvitar/Pokemon XY/Larvitar/images/pm0246_00_Eye1.png',
+    },
+  ],
+  version: '0.54:2',
+}

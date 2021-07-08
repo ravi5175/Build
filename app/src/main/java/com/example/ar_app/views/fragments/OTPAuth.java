@@ -1,4 +1,4 @@
-package com.example.ar_app.views;
+package com.example.ar_app.views.fragments;
 
 import android.os.Bundle;
 
@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.ar_app.databinding.FragmentOtpAuthBinding;
-import com.example.ar_app.viewmodels.InitViewModel;
-import com.example.ar_app.viewmodels.OTPAuthViewModel;
+import com.example.ar_app.viewmodels.activities.InitViewModel;
+import com.example.ar_app.viewmodels.fragments.OTPAuthViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -146,7 +146,7 @@ public class OTPAuth extends Fragment {
 
                             FirebaseUser user = task.getResult().getUser();
                             otpStatus("Logging In...");
-                            initViewModel.getInitContext().transaction_to_ARCam();
+                            initViewModel.getInitContext().MainActivityIntent();
                             // Update UI
                         } else {
                             // Sign in failed, display a message and update the UI

@@ -1,28 +1,20 @@
-package com.example.ar_app.views;
+package com.example.ar_app.views.fragments;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.ar_app.R;
 import com.example.ar_app.adapters.GalleryRecyclerAdapter;
-import com.example.ar_app.databinding.FragmentArCamBinding;
 import com.example.ar_app.databinding.FragmentGalleryBinding;
 import com.example.ar_app.models.ImageDownloadUrl;
-import com.example.ar_app.viewmodels.ARCamViewModel;
-import com.example.ar_app.viewmodels.GalleryViewModel;
+import com.example.ar_app.viewmodels.fragments.GalleryViewModel;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -57,8 +49,6 @@ public class Gallery extends Fragment {
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
-
-
 
         galleryLayoutManager = new GridLayoutManager(requireContext(),4);
         binding.galleryRecyclerView.setLayoutManager(galleryLayoutManager);

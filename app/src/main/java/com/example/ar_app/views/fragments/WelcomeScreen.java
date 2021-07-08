@@ -1,4 +1,4 @@
-package com.example.ar_app.views;
+package com.example.ar_app.views.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ar_app.databinding.FragmentWelcomeScreenBinding;
-import com.example.ar_app.viewmodels.InitViewModel;
+import com.example.ar_app.viewmodels.activities.InitViewModel;
 
 
 public class WelcomeScreen extends Fragment {

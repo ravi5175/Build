@@ -1,23 +1,22 @@
-package com.example.ar_app.views;
+package com.example.ar_app.views.activities;
 
 import android.Manifest;
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.view.WindowCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ar_app.databinding.ActivityInitBinding;
-import com.example.ar_app.viewmodels.InitViewModel;
+import com.example.ar_app.viewmodels.activities.InitViewModel;
+import com.example.ar_app.views.fragments.ARCam;
+import com.example.ar_app.views.fragments.Gallery;
+import com.example.ar_app.views.fragments.OTPAuth;
+import com.example.ar_app.views.fragments.WelcomeScreen;
 import com.google.firebase.auth.FirebaseAuth;
-
-import static android.view.View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
 
 public class Init extends AppCompatActivity {
 
@@ -56,7 +55,7 @@ public class Init extends AppCompatActivity {
 
         if(FAuth.getCurrentUser()!=null){
             Log.d("user","user found");
-            transaction_to_ARCam();
+            MainActivityIntent();
         }else{
             transaction_to_Welcome();
         }
@@ -65,33 +64,23 @@ public class Init extends AppCompatActivity {
     public void transaction_to_Auth(){
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fOTPAuth, null)
-                .setReorderingAllowed(true)
                 .addToBackStack("fAuth")
+                .setReorderingAllowed(true)
                 .commit();
     }
 
     public void transaction_to_Welcome(){
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fWelcomeScreen, null)
+                //.addToBackStack("fWelcome")
                 .setReorderingAllowed(true)
-                .addToBackStack("fWelcome")
                 .commit();
     }
 
-    public void transaction_to_ARCam(){
-        fragmentManager.beginTransaction()
-                .replace(binding.initFrameLayout.getId(), fARCam, null)
-                .setReorderingAllowed(true)
-                .addToBackStack("fARCam")
-                .commit();
-    }
-
-    public void transaction_to_Gallery(){
-        fragmentManager.beginTransaction()
-                .replace(binding.initFrameLayout.getId(), fGallery, null)
-                .setReorderingAllowed(true)
-                .addToBackStack("fGallery")
-                .commit();
+    public void MainActivityIntent(){
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void RunPermissionCheck() {
@@ -103,5 +92,4 @@ public class Init extends AppCompatActivity {
         };
         ActivityCompat.requestPermissions(this,Permissions , 1);
     }
-
 }

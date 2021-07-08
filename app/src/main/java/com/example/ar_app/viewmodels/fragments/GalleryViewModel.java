@@ -1,4 +1,4 @@
-package com.example.ar_app.viewmodels;
+package com.example.ar_app.viewmodels.fragments;
 
 import android.util.Log;
 
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 public class GalleryViewModel extends ViewModel {
     public MutableLiveData<ArrayList<ImageDownloadUrl>> imageDownloadUrlList = new MutableLiveData<ArrayList<ImageDownloadUrl>>(new ArrayList<ImageDownloadUrl>());
+
     DatabaseReference database = FirebaseDatabase.getInstance("https://ar-app-11eb0-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Image");
     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
 

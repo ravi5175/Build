@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".views.OTPAuth">
+    tools:context=".views.fragments.OTPAuth">
 
     <ImageView
         android:id="@+id/back_to_welcome_screen"
