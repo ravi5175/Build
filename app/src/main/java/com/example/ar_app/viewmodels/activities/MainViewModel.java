@@ -1,13 +1,21 @@
 package com.example.ar_app.viewmodels.activities;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.ar_app.views.activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class MainViewModel extends ViewModel {
     MainActivity mainActivityContext = null;
     FirebaseAuth fAuth = null ;
+    DatabaseReference database = null;
+    StorageReference storage = null;
+
+    public MutableLiveData<String> photoUrl = new MutableLiveData<String>(null);
 
     public void setMainActivityContext(MainActivity context){
         this.mainActivityContext = context;
@@ -23,5 +31,29 @@ public class MainViewModel extends ViewModel {
 
     public FirebaseAuth getFAuth() {
         return fAuth;
+    }
+
+    public void setPhotoUrl(String photoUrl) {
+        this.photoUrl.setValue(photoUrl);
+    }
+
+    public String getPhotoUrl(){
+        return photoUrl.getValue();
+    }
+
+    public void setStorage(StorageReference storage){
+        this.storage = storage;
+    }
+
+    public StorageReference getStorage(){
+        return storage;
+    }
+
+    public void setDatabase(DatabaseReference database){
+        this.database = database;
+    }
+
+    public DatabaseReference getDatabase(){
+        return database;
     }
 }

@@ -19,6 +19,7 @@ public class ARCamViewModel extends ViewModel {
     public MutableLiveData<Boolean> cameraMode = new MutableLiveData<Boolean>(false);
 
     public MutableLiveData<String> modelRenderableId = new MutableLiveData<String>("toy_truck.sfb");
+    public MutableLiveData<String> tempModelRenderableId = new MutableLiveData<String>("blank");
 
     // model renderable names with their extensions
     String toy_truck_id = "toy_truck.sfb";

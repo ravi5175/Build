@@ -87,7 +87,6 @@ public class OTPAuth extends Fragment {
         }
     }
 
-
     private void initiateOTP(String phoneNumber){
         binding.otpStatus.setVisibility(View.VISIBLE);
         otpStatus("sending OTP");

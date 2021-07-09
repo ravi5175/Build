@@ -11,14 +11,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.ar_app.R;
 import com.example.ar_app.models.ImageDownloadUrl;
+import com.example.ar_app.viewmodels.activities.MainViewModel;
 
 import java.util.ArrayList;
 
 public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecyclerAdapter.GalleryRecyclerAdapterViewHolder> {
 
     public ArrayList<ImageDownloadUrl> data;
-    public GalleryRecyclerAdapter(ArrayList<ImageDownloadUrl> data){
+    public MainViewModel mainViewModel;
+    public GalleryRecyclerAdapter(ArrayList<ImageDownloadUrl> data , MainViewModel mainViewModel){
         this.data = data;
+        this.mainViewModel = mainViewModel;
     }
 
     @Override
@@ -32,6 +35,14 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     public void onBindViewHolder(GalleryRecyclerAdapter.GalleryRecyclerAdapterViewHolder holder, int position) {
             ImageDownloadUrl imageUrlModel = data.get(position);
             Glide.with(holder.imageView).asBitmap().load(imageUrlModel.getImageUrl()).into(holder.imageView);
+
+            holder.imageView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    mainViewModel.setPhotoUrl(imageUrlModel.getImageUrl());
+                    mainViewModel.getMainActivityContext().transaction_to_photo_viewer();
+                }
+            });
     }
 
     @Override

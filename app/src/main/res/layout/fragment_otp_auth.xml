@@ -12,14 +12,15 @@
         android:layout_height="40dp"
         android:background="@drawable/ic_back_button"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="30dp"/>
+        android:layout_marginStart="30dp"
+        android:contentDescription="@string/back_to_welcome_screen_button"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="130dp"
         android:layout_gravity="center_horizontal"
-        android:text="sending OTP on your device"
+        android:text="@string/sending_otp_on_your_device"
         android:textColor="#646464"
         android:textStyle="bold|italic"/>
 
@@ -29,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:layout_gravity="center_horizontal"
-        android:text="display phone number"
+        android:text="@string/display_phone_number"
         android:textColor="#646464"
         android:textStyle="bold"/>
 
@@ -69,7 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="otp will expire in :"
+            android:text="@string/otp_will_expire_in"
             android:textStyle="bold"
             android:textColor="#646464"/>
 
@@ -79,7 +80,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/black_ops_one"
-            android:text="60"
+            android:text="@string/otp_timer"
             android:textColor="#646464"
             android:textSize="30sp"
             android:textStyle="bold" />
@@ -90,7 +91,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/ic_otp_resend_button_disabled"
-            android:textStyle="bold"/>
+            android:contentDescription="@string/resend_otp"/>
     </LinearLayout>
 
     <TextView
@@ -101,7 +102,7 @@
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="80dp"
         android:layout_marginHorizontal="40dp"
-        android:text="otp status"
+        android:text="@string/otp_status"
         android:textColor="#646464"/>
 
 

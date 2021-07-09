@@ -64,9 +64,6 @@ public class ARCam extends Fragment {
 
     CustomARFragment arCamFragment;
 
-    DatabaseReference database = FirebaseDatabase.getInstance("https://ar-app-11eb0-default-rtdb.asia-southeast1.firebasedatabase.app/").getReference("Image");
-    StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-
     int count = 0;
 
     String modelRenderableId;
@@ -116,17 +113,16 @@ public class ARCam extends Fragment {
             public void onClick(View view) {
                 if(arCamViewModel.cameraMode.getValue()){
                     takePhoto();
-                }else
-                    placeModel();
-                    binding.nodeCount.setText(String.valueOf(count+=1));
+                }else {
+                    //placeModel();
+                }
             }
         });
-
 
         binding.galleryButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                //initViewModel.getInitContext().transaction_to_Gallery();
+                mainViewModel.getMainActivityContext().transaction_to_Gallery();
             }
         });
 
@@ -165,6 +161,7 @@ public class ARCam extends Fragment {
         transformableNode.setRenderable(modelRenderable);
         arCamFragment.getArSceneView().getScene().addChild(anchorNode);
         transformableNode.select();
+        binding.nodeCount.setText(String.valueOf(count+=1));
     }
 
     // AR air mode
@@ -203,7 +200,6 @@ public class ARCam extends Fragment {
         // Make the request to copy.
         PixelCopy.request(view, bitmap, (copyResult) -> {
             if (copyResult == PixelCopy.SUCCESS) {
-                binding.imageCaptureStatus.setText("Captured Image");
                 uploadPhoto(bitmap);
             } else {
                 Log.d("takePhoto","pixel copy failed");
@@ -218,7 +214,7 @@ public class ARCam extends Fragment {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        StorageReference uploadReference = storageRef.child("images/"+ Calendar.getInstance().getTimeInMillis() +".jpg");
+        StorageReference uploadReference = mainViewModel.getStorage().child("images/"+ Calendar.getInstance().getTimeInMillis() +".jpg");
 
         UploadTask uploadTask = uploadReference.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -239,9 +235,9 @@ public class ARCam extends Fragment {
                     public void onSuccess(Uri uri) {
                         Log.d("ref uri",uri.toString());
                         ImageDownloadUrl imageDownloadUrl = new ImageDownloadUrl(uri.toString());
-                        String imageDownloadUrlId = database.push().getKey();
+                        String imageDownloadUrlId = mainViewModel.getDatabase().push().getKey();
                         Log.d("ref key",imageDownloadUrlId);
-                        database.child(imageDownloadUrlId).setValue(imageDownloadUrl);
+                        mainViewModel.getDatabase().child(imageDownloadUrlId).setValue(imageDownloadUrl);
                         binding.imageCaptureStatus.setText("Upload Image Success");
                         binding.imageCaptureStatusLayout.setVisibility(View.GONE);
                     }
@@ -278,6 +274,8 @@ public class ARCam extends Fragment {
             public void onClick(View view) {
                 arCamViewModel.cameraMode.setValue(false);
                 binding.arCamRecycler.setVisibility(View.VISIBLE);
+                arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(true);
+                arCamViewModel.modelRenderableId.setValue(arCamViewModel.tempModelRenderableId.getValue());
                 dialog.cancel();
             }
         });
@@ -288,6 +286,9 @@ public class ARCam extends Fragment {
             public void onClick(View view) {
                 arCamViewModel.cameraMode.setValue(true);
                 binding.arCamRecycler.setVisibility(View.INVISIBLE);
+                arCamViewModel.tempModelRenderableId.setValue(arCamViewModel.modelRenderableId.getValue());
+                arCamViewModel.modelRenderableId.setValue("blank");
+                arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(false);
                 dialog.cancel();
             }
         });

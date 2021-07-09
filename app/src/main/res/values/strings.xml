@@ -1,5 +1,39 @@
 <resources>
+    <!-- **APP STRING**-->
     <string name="app_name">AR-APP</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- **ACTIVITIES STRING**-->
+
+    <!-- INIT ACTIVITY-->
+
+    <!-- MAIN ACTIVITY-->
+
+    <!-- **FRAGMENT STRING**-->
+
+    <!-- WELCOME FRAGMENT-->
+    <string name="welcome">Welcome</string>
+    <string name="login_signup">Log in/Sign Up</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="authenticate_button">Authenticate Button</string>
+    <string name="welcome_screen_background">Welcome Screen Background</string>
+
+    <!-- AUTH FRAGMENT-->
+    <string name="back_to_welcome_screen_button">Back to Welcome Screen Button</string>
+    <string name="sending_otp_on_your_device">Sending OTP on Your Device</string>
+    <string name="display_phone_number">Display Phone Number</string>
+    <string name="otp_will_expire_in">OTP will expire in : </string>
+    <string name="otp_timer">60</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="otp_status">OTP status</string>
+
+    <!-- ARCAM FRAGMENT-->
+
+    <!-- GALLERY FRAGMENT-->
+
+    <!-- PHOTO FRAGMENT-->
+    <string name="photo">Photo</string>
+    <string name="image_url">Image Url</string>
+    <string name="url_text">Url</string>
+
+
 </resources>
