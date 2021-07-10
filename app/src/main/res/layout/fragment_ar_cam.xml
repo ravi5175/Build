@@ -11,7 +11,7 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/arFragment"
         android:name="com.example.ar_app.custom_classes.CustomARFragment"
         android:layout_width="match_parent"
@@ -37,9 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:text="Progress"
+            android:text="@string/progress"
             android:textColor="#FFFFFF"/>
-
     </LinearLayout>
 
     <View
@@ -52,8 +51,8 @@
         android:layout_width="1dp"
         android:layout_height="match_parent"
         android:background="#60000000"
-        android:layout_marginBottom="110dp"
         android:layout_gravity="center_horizontal"/>
+
     <LinearLayout
         android:layout_width="104dp"
         android:layout_height="wrap_content"
@@ -72,16 +71,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="mode: "
+            android:text="@string/mode"
             android:textColor="#FFFFFF"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/ar_cam_mode_status"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="AR"
+            android:text="@string/ar"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold" />
@@ -96,16 +95,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="4dp"
-            android:text="nodes: "
+            android:text="@string/node"
             android:textColor="#FFFFFF"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/node_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0"
+            android:text="@string/set"
             android:textColor="#FFFFFF"
             android:textSize="12sp"
             android:textStyle="bold"/>
@@ -133,7 +132,8 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="center_horizontal|center_vertical"
-            android:background="@drawable/ic_ar_cam"/>
+            android:background="@drawable/ic_ar_cam"
+            android:contentDescription="@string/capture_button"/>
 
         <ImageView
             android:id="@+id/gallery_button"
@@ -141,7 +141,8 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical|end"
             android:layout_marginEnd="30dp"
-            android:background="@drawable/ic_gallery_button"/>
+            android:background="@drawable/ic_gallery_button"
+            android:contentDescription="@string/gallery_button"/>
 
 
         <ImageView
@@ -150,7 +151,8 @@
             android:layout_height="30dp"
             android:layout_gravity="center_vertical|start"
             android:layout_marginStart="30dp"
-            android:background="@drawable/log_out_button"/>
+            android:background="@drawable/ic_settings_menu"
+            android:contentDescription="@string/settings_button"/>
 
     </FrameLayout>
 </LinearLayout>

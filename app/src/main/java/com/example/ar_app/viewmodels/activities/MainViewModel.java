@@ -9,11 +9,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+/**
+ * Main Activity View Model Class
+ */
+
+@SuppressWarnings("staticFieldLeak")
 public class MainViewModel extends ViewModel {
-    MainActivity mainActivityContext = null;
-    FirebaseAuth fAuth = null ;
-    DatabaseReference database = null;
-    StorageReference storage = null;
+
+    MainActivity mainActivityContext = null; //Main Actitvity Context Variable
+    FirebaseAuth fAuth = null ;              //Firebase Auth Variable
+    DatabaseReference database = null;       //Firebase Database Reference Variable
+    StorageReference storage = null;         //Firebase Storage Referance Variable
 
     public MutableLiveData<String> photoUrl = new MutableLiveData<String>(null);
 

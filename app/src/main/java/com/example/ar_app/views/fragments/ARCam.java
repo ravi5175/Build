@@ -17,8 +17,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -26,13 +24,9 @@ import com.example.ar_app.R;
 import com.example.ar_app.adapters.ARCamRecyclerAdapter;
 import com.example.ar_app.custom_classes.CustomARFragment;
 import com.example.ar_app.databinding.FragmentArCamBinding;
-import com.example.ar_app.models.ARCamRecyclerChildModel;
 import com.example.ar_app.models.ImageDownloadUrl;
 import com.example.ar_app.viewmodels.activities.MainViewModel;
 import com.example.ar_app.viewmodels.fragments.ARCamViewModel;
-import com.example.ar_app.viewmodels.activities.InitViewModel;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.ar.core.Anchor;
 import com.google.ar.sceneform.AnchorNode;
 import com.google.ar.sceneform.ArSceneView;
@@ -42,50 +36,48 @@ import com.google.ar.sceneform.collision.Ray;
 import com.google.ar.sceneform.math.Vector3;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.ux.TransformableNode;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Calendar;
 
+/**
+ * ARCam Fragment
+ * - All AR functionality is handled here
+ */
 
+@SuppressWarnings("ConstantConditions")
 public class ARCam extends Fragment {
 
-    FragmentArCamBinding binding;
-    ARCamViewModel arCamViewModel;
-    MainViewModel mainViewModel;
+    FragmentArCamBinding    binding;
+    ARCamViewModel          arCamViewModel;
+    MainViewModel           mainViewModel;
 
-    LinearLayoutManager arCamRecyclerLayoutManager;
-    ARCamRecyclerAdapter arCamRecyclerAdapter;
+    LinearLayoutManager     arCamRecyclerLayoutManager;
+    ARCamRecyclerAdapter    arCamRecyclerAdapter;
 
-    CustomARFragment arCamFragment;
+    CustomARFragment        arCamFragment;
+
+    String                  modelRenderableId;
 
     int count = 0;
 
-    String modelRenderableId;
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentArCamBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //ViewModels Initialization
         arCamViewModel = new ViewModelProvider(this).get(ARCamViewModel.class);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
-        binding.arcamSettings.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                showDialog();
-            }
-        });
+        binding.arcamSettings.setOnClickListener(v -> showDialog());
 
         modelRenderableId = arCamViewModel.modelRenderableId.getValue();
 
@@ -108,52 +100,40 @@ public class ARCam extends Fragment {
                     });
         });
 
-        binding.arCamCapture.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                if(arCamViewModel.cameraMode.getValue()){
-                    takePhoto();
-                }else {
-                    //placeModel();
-                }
+        binding.arCamCapture.setOnClickListener(view1 -> {
+            if(arCamViewModel.cameraMode.getValue()){
+                takePhoto();
+            }else {
+                // for AR Air Mode
+                // RenderableModel will be placed at a 75 cm away from Center of Camera View
+                //placeModel();
             }
         });
 
-        binding.galleryButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                mainViewModel.getMainActivityContext().transaction_to_Gallery();
+        binding.galleryButton.setOnClickListener(view12 -> mainViewModel.getMainActivityContext().transaction_to_Gallery());
+
+        arCamViewModel.cameraMode.observe(getViewLifecycleOwner(), mode -> {
+            if(mode){
+                binding.arCamModeStatus.setText(R.string.capture);
+            }else{
+                binding.arCamModeStatus.setText(R.string.ar);
             }
         });
 
-        arCamViewModel.cameraMode.observe(getViewLifecycleOwner(),new Observer<Boolean>(){
-                    @Override
-                    public void onChanged(Boolean mode) {
-                        if(mode){
-                            binding.arCamModeStatus.setText("CAPTURE");
-                        }else{
-                            binding.arCamModeStatus.setText("AR");
-                        }
-                    }
-        });
+        arCamViewModel.modelRenderableId.observe(getViewLifecycleOwner(), s -> modelRenderableId = s);
 
-        arCamViewModel.modelRenderableId.observe(getViewLifecycleOwner(), new Observer<String>(){
-            @Override
-            public void onChanged(String s) {
-                modelRenderableId = s;
-            }
+        arCamViewModel.recyclerViewData.observe(getViewLifecycleOwner(), arCamRecyclerChildModels -> {
+            arCamRecyclerAdapter.notifyDataSetChanged();
+            Log.d("ARCAM-dataset-changed","notify data set changed called");
         });
-
-        arCamViewModel.recyclerViewData.observe(getViewLifecycleOwner(),new Observer<ArrayList<ARCamRecyclerChildModel>>(){
-                    @Override
-                    public void onChanged(ArrayList<ARCamRecyclerChildModel> arCamRecyclerChildModels) {
-                        arCamRecyclerAdapter.notifyDataSetChanged();
-                        Log.d("ar_cam","notifydatasetchanged called");
-                    }
-                });
     }
 
-    // AR mode
+    /**
+     * function - addModelToScene
+     * creates and add, transformable anchor node into the sceneview
+     * @param anchor anchor generated by OnPlaneTapListener
+     * @param modelRenderable a modelrenderable asset
+     */
     private void addModelToScene(Anchor anchor, ModelRenderable modelRenderable) {
         AnchorNode anchorNode = new AnchorNode(anchor);
         TransformableNode transformableNode = new TransformableNode(arCamFragment.getTransformationSystem());
@@ -164,18 +144,27 @@ public class ARCam extends Fragment {
         binding.nodeCount.setText(String.valueOf(count+=1));
     }
 
-    // AR air mode
+    /**
+     * function - placeModel
+     * use to set anchor and attach a modelRenderable in air
+     * i.e in center front of camera screen (75 cm default)
+     */
     private void placeModel(){
         ModelRenderable.builder()
                 .setSource(requireContext(), Uri.parse("toy_truck.sfb"))
                 .build()
-                .thenAccept(modelRenderable -> addModelOnClick(modelRenderable))
+                .thenAccept(this::addModelOnClick)
                 .exceptionally(throwable ->{
                     Toast.makeText(requireActivity(),throwable.getMessage(),Toast.LENGTH_SHORT).show();
                     return null;
                 });
     }
 
+    /**
+     * function - addModelOnClick
+     * sets node in air in front of camera view
+     * @param modelRenderable ModelRenderable object
+     */
     private void addModelOnClick(ModelRenderable modelRenderable){
         Node node = new Node();
         node.setParent(arCamFragment.getArSceneView().getScene());
@@ -186,10 +175,13 @@ public class ARCam extends Fragment {
         node.setLocalPosition(newPosition);
     }
 
-
+    /**
+     *  function takePhoto
+     *  - captures a bitmap from sceneview of arCam
+     */
     private void takePhoto() {
         binding.imageCaptureStatusLayout.setVisibility(View.VISIBLE);
-        binding.imageCaptureStatus.setText("Capturing Image...");
+        binding.imageCaptureStatus.setText(R.string.capturing_image);
         ArSceneView view = arCamFragment.getArSceneView();
         final Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
 
@@ -208,49 +200,47 @@ public class ARCam extends Fragment {
         }, new Handler(handlerThread.getLooper()));
     }
 
-
+    /**
+     * function uploadPhoto
+     * uploads bitmap to firebase storage
+     * writes uploaded bitmap url to firebase realtimedatabase
+     * @param bitmap bitmap object
+     */
     private void uploadPhoto(Bitmap bitmap){
-        binding.imageCaptureStatus.setText("Uploading Image");
+        binding.imageCaptureStatus.setText(R.string.uploading_image);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
         StorageReference uploadReference = mainViewModel.getStorage().child("images/"+ Calendar.getInstance().getTimeInMillis() +".jpg");
 
         UploadTask uploadTask = uploadReference.putBytes(data);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                binding.imageCaptureStatus.setText("Upload Image Failed");
+        uploadTask.addOnFailureListener(exception -> {
+            binding.imageCaptureStatus.setText(R.string.uploading_image_failed);
+            binding.imageCaptureStatusLayout.setVisibility(View.GONE);
+
+            Toast.makeText(requireContext(),"upload unsuccessful",Toast.LENGTH_SHORT).show();
+            Log.d("Firebase Storage",exception.toString());
+        }).addOnSuccessListener(taskSnapshot -> {
+            Toast.makeText(requireContext(),"upload successful",Toast.LENGTH_SHORT).show();
+            uploadReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                Log.d("ref uri",uri.toString());
+                ImageDownloadUrl imageDownloadUrl = new ImageDownloadUrl(uri.toString());
+                String imageDownloadUrlId = mainViewModel.getDatabase().push().getKey();
+                Log.d("ref key",imageDownloadUrlId);
+                mainViewModel.getDatabase().child(imageDownloadUrlId).setValue(imageDownloadUrl);
+                binding.imageCaptureStatus.setText(R.string.uploading_image_success);
                 binding.imageCaptureStatusLayout.setVisibility(View.GONE);
-                // Handle unsuccessful uploads
-                Toast.makeText(requireContext(),"upload unsuccessful",Toast.LENGTH_SHORT).show();
-                Log.d("Firebase Storage",exception.toString());
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Toast.makeText(requireContext(),"upload successful",Toast.LENGTH_SHORT).show();
-                uploadReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>(){
-                    @Override
-                    public void onSuccess(Uri uri) {
-                        Log.d("ref uri",uri.toString());
-                        ImageDownloadUrl imageDownloadUrl = new ImageDownloadUrl(uri.toString());
-                        String imageDownloadUrlId = mainViewModel.getDatabase().push().getKey();
-                        Log.d("ref key",imageDownloadUrlId);
-                        mainViewModel.getDatabase().child(imageDownloadUrlId).setValue(imageDownloadUrl);
-                        binding.imageCaptureStatus.setText("Upload Image Success");
-                        binding.imageCaptureStatusLayout.setVisibility(View.GONE);
-                    }
-                }).addOnFailureListener(new OnFailureListener(){
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(requireContext(),"rt database update FAILED",Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+            }).addOnFailureListener(e ->
+                    Toast.makeText(requireContext(),"rt database update FAILED "+e.getMessage(),Toast.LENGTH_SHORT).show());
         });
     }
 
+    /**
+     * function showDialog
+     * creates a setting dialog
+     * - switch camera mode from AR to Capture
+     * - log out from current session
+     */
     private void showDialog(){
         Dialog dialog = new Dialog(requireContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -259,38 +249,29 @@ public class ARCam extends Fragment {
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
 
         LinearLayout logout = dialog.findViewById(R.id.logout_button);
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainViewModel.getFAuth().signOut();
-                mainViewModel.getMainActivityContext().InitActivityIntent();
-                dialog.cancel();
-            }
+        logout.setOnClickListener(view -> {
+            mainViewModel.getFAuth().signOut();
+            mainViewModel.getMainActivityContext().InitActivityIntent();
+            dialog.cancel();
         });
 
         LinearLayout arMode = dialog.findViewById(R.id.ar_mode_button);
-        arMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                arCamViewModel.cameraMode.setValue(false);
-                binding.arCamRecycler.setVisibility(View.VISIBLE);
-                arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(true);
-                arCamViewModel.modelRenderableId.setValue(arCamViewModel.tempModelRenderableId.getValue());
-                dialog.cancel();
-            }
+        arMode.setOnClickListener(view -> {
+            arCamViewModel.cameraMode.setValue(false);
+            binding.arCamRecycler.setVisibility(View.VISIBLE);
+            arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(true);
+            arCamViewModel.modelRenderableId.setValue(arCamViewModel.tempModelRenderableId.getValue());
+            dialog.cancel();
         });
 
         LinearLayout captureMode = dialog.findViewById(R.id.capture_mode_button);
-        captureMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                arCamViewModel.cameraMode.setValue(true);
-                binding.arCamRecycler.setVisibility(View.INVISIBLE);
-                arCamViewModel.tempModelRenderableId.setValue(arCamViewModel.modelRenderableId.getValue());
-                arCamViewModel.modelRenderableId.setValue("blank");
-                arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(false);
-                dialog.cancel();
-            }
+        captureMode.setOnClickListener(view -> {
+            arCamViewModel.cameraMode.setValue(true);
+            binding.arCamRecycler.setVisibility(View.INVISIBLE);
+            arCamViewModel.tempModelRenderableId.setValue(arCamViewModel.modelRenderableId.getValue());
+            arCamViewModel.modelRenderableId.setValue("blank");
+            arCamFragment.getArSceneView().getPlaneRenderer().setEnabled(false);
+            dialog.cancel();
         });
 
     }

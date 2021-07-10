@@ -5,6 +5,20 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        debug {
+            storeFile file('/home/monarch5175/Projects/ReleaseBuild/ar-app-release-key.jks')
+            storePassword '9540049852'
+            keyAlias 'key1'
+            keyPassword '9540049852'
+        }
+        release {
+            storeFile file('/home/monarch5175/Projects/ReleaseBuild/ar-app-release-key.jks')
+            storePassword '9540049852'
+            keyAlias 'key1'
+            keyPassword '9540049852'
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -20,7 +34,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -38,7 +52,7 @@ android {
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.3.0'
-    implementation 'com.google.android.material:material:1.3.0'
+    implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
@@ -81,7 +95,7 @@ sceneform.asset("sampledata/grass1/grass1.obj",
         'sampledata/sfa/grass1/grass1.sfa',
         'src/main/assets/grass1')
 
-sceneform.asset("sampledata/grass_patch/10450_Rectangular_Grass_Patch_v1_iterations-2.obj",
+sceneform.asset("sampledata/grass_patch/grass_patch.obj",
         'default',
-        'sampledata/sfa/grass_patch/10450_Rectangular_Grass_Patch_v1_iterations-2.sfa',
+        'sampledata/sfa/grass_patch/grass_patch.sfa',
         'src/main/assets/grass_patch')

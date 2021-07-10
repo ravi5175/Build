@@ -25,6 +25,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
     }
 
     @Override
+    @NonNull
     public GalleryRecyclerAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.gallery_recycler_child_layout,parent,false);
@@ -36,12 +37,9 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
             ImageDownloadUrl imageUrlModel = data.get(position);
             Glide.with(holder.imageView).asBitmap().load(imageUrlModel.getImageUrl()).into(holder.imageView);
 
-            holder.imageView.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    mainViewModel.setPhotoUrl(imageUrlModel.getImageUrl());
-                    mainViewModel.getMainActivityContext().transaction_to_photo_viewer();
-                }
+            holder.imageView.setOnClickListener(view -> {
+                mainViewModel.setPhotoUrl(imageUrlModel.getImageUrl());
+                mainViewModel.getMainActivityContext().transaction_to_photo_viewer();
             });
     }
 
@@ -50,7 +48,7 @@ public class GalleryRecyclerAdapter extends RecyclerView.Adapter<GalleryRecycler
         return data.size();
     }
 
-    public class GalleryRecyclerAdapterViewHolder extends RecyclerView.ViewHolder{
+    public static class GalleryRecyclerAdapterViewHolder extends RecyclerView.ViewHolder{
         ImageView imageView;
 
         public GalleryRecyclerAdapterViewHolder(View itemView){

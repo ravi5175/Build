@@ -8,18 +8,22 @@ import androidx.lifecycle.ViewModel;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * OTPAuth Fragment View Model Class
+ */
 public class OTPAuthViewModel extends ViewModel {
-    public static OTPAuthViewModel instance;
 
     public String verificationId = "";
-
-    CountDownTimer timer;
+    public CountDownTimer timer;
 
     public MutableLiveData<String> countDown = new MutableLiveData<String>();
     public MutableLiveData<Boolean> isTimerRunning = new MutableLiveData<Boolean>(false);
-    //MutableLiveData<Long> timerDuration = new MutableLiveData<Long>();
 
-
+    /**
+     * function countDownTimer
+     * - handles timer for OTP expiry
+     * @return
+     */
     public CountDownTimer countDownTimer(){
         CountDownTimer tm = new CountDownTimer(TimeUnit.MINUTES.toMillis(1),1000){
             @Override
@@ -37,6 +41,10 @@ public class OTPAuthViewModel extends ViewModel {
         return tm;
     }
 
+    /**
+     * function timerStart
+     * - starts OTP Expiry timer
+     */
     public void timerStart(){
         isTimerRunning.setValue(true);
         if(timer==null){

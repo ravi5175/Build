@@ -15,21 +15,20 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_back_button"
-            android:layout_margin="10dp"/>
+            android:layout_margin="10dp"
+            android:contentDescription="@string/back_button"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="20dp"
-            android:text="Photos"
+            android:text="@string/photos_title"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="#646464"/>
 
     </LinearLayout>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/gallery_recycler_view"

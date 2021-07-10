@@ -13,11 +13,18 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.ar_app.databinding.FragmentWelcomeScreenBinding;
 import com.example.ar_app.viewmodels.activities.InitViewModel;
 
+import java.util.Objects;
 
+/**
+ * Welcome Screen Fragement
+ * - serves as welcome screen for user
+ * - take user's phone number as input
+ */
 public class WelcomeScreen extends Fragment {
-    private FragmentWelcomeScreenBinding binding;
 
-    private InitViewModel initViewModel;
+    FragmentWelcomeScreenBinding binding;
+
+    InitViewModel initViewModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
@@ -30,24 +37,33 @@ public class WelcomeScreen extends Fragment {
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //ViewModel Initialization
         initViewModel = new ViewModelProvider(requireActivity()).get(InitViewModel.class);
 
-        binding.authenticate.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                String phoneNumber = binding.phoneNumber.getText().toString();
-                if(phoneNumber.length() == 0){
-                    generateToast("Please fill your phone number");
-                }else if (phoneNumber.length() != 10){
-                    generateToast("Invalid Phone Number");
-                }else{
-                    initViewModel.setPhoneNumber(binding.countryCodePicker.getFullNumberWithPlus().replace(" ",""));
-                    initViewModel.getInitContext().transaction_to_Auth();
-                }
-            }
+        binding.authenticate.setOnClickListener(v -> {
+            PhoneNumberAcquire();
         });
     }
 
+    /**
+     *  Take user phone number input , validates phone number and start transaction to OTPAuth Fragment
+     */
+    private void PhoneNumberAcquire(){
+        String phoneNumber = Objects.requireNonNull(binding.phoneNumber.getText()).toString();
+        if(phoneNumber.length() == 0){
+            generateToast("Please fill your phone number");
+        }else if (phoneNumber.length() != 10){
+            generateToast("Invalid Phone Number");
+        }else{
+            initViewModel.setPhoneNumber(binding.countryCodePicker.getFullNumberWithPlus().replace(" ",""));
+            initViewModel.getInitContext().transaction_to_Auth();
+        }
+    }
+
+    /**
+     * generates toast messages on WelcomeScreen Fragment
+     * @param message to be displayed over the screen
+     */
     private void generateToast(String message){
         Toast.makeText(getContext(),message,Toast.LENGTH_SHORT).show();
     }

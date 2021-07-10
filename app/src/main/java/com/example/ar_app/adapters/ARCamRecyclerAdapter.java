@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.ar_app.R;
@@ -26,6 +27,7 @@ public class ARCamRecyclerAdapter extends RecyclerView.Adapter<ARCamRecyclerAdap
     }
 
     @Override
+    @NonNull
     public ARCamAdapterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.ar_cam_recycler_child_layout,parent,false);
@@ -44,17 +46,14 @@ public class ARCamRecyclerAdapter extends RecyclerView.Adapter<ARCamRecyclerAdap
             holder.layout.setBackgroundResource(R.drawable.ar_asset_frame_not_selected);
         }
 
-        holder.image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d("ar_cam","recycler image clicked");
-                for(ARCamRecyclerChildModel model : data){
-                    model.setIsSelected(false);
-                }
-                arCamViewModel.modelRenderableId.setValue(currentItem.id);
-                data.get(position).setIsSelected(true);
-                arCamViewModel.recyclerViewData.setValue(data);
+        holder.image.setOnClickListener(view -> {
+            Log.d("ARCAM-RECYCLER-ADAPTER-image-click","recycler image clicked");
+            for(ARCamRecyclerChildModel model : data){
+                model.setIsSelected(false);
             }
+            arCamViewModel.modelRenderableId.setValue(currentItem.id);
+            data.get(position).setIsSelected(true);
+            arCamViewModel.recyclerViewData.setValue(data);
         });
     }
 
@@ -63,7 +62,7 @@ public class ARCamRecyclerAdapter extends RecyclerView.Adapter<ARCamRecyclerAdap
         return data.size();
     }
 
-    public class ARCamAdapterViewHolder extends RecyclerView.ViewHolder{
+    public static class ARCamAdapterViewHolder extends RecyclerView.ViewHolder{
         ImageView image;
         TextView title;
         LinearLayout layout;

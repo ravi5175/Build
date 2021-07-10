@@ -27,13 +27,26 @@
     <string name="otp_status">OTP status</string>
 
     <!-- ARCAM FRAGMENT-->
+    <string name="progress">Progress</string>
+    <string name="mode">Mode : </string>
+    <string name="node">Nodes : </string>
+    <string name="ar">AR</string>
+    <string name="set">0</string>
+    <string name="capture_button">Capture Button</string>
+    <string name="settings_button">Settings Button</string>
+    <string name="gallery_button">Gallery Button</string>
+    <string name="capture"> CAPTURE </string>
+    <string name="capturing_image">CAPTURING IMAGE</string>
+    <string name="uploading_image">UPLOADING IMAGE</string>
+    <string name="uploading_image_failed">UPLOADING IMAGE FAILED</string>
+    <string name="uploading_image_success">UPLOADING IMAGE SUCCESS</string>
 
     <!-- GALLERY FRAGMENT-->
+    <string name="photos_title">Photos</string>
+    <string name="back_button">Back Button</string>
 
     <!-- PHOTO FRAGMENT-->
     <string name="photo">Photo</string>
-    <string name="image_url">Image Url</string>
     <string name="url_text">Url</string>
-
 
 </resources>

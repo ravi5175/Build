@@ -29,6 +29,11 @@ import com.mukesh.OnOtpCompletionListener;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * OTPAuth Fragment
+ * - user authentication handler
+ */
+
 public class OTPAuth extends Fragment {
 
     FragmentOtpAuthBinding binding;
@@ -46,6 +51,7 @@ public class OTPAuth extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //ViewModel Initialization
         otpAuthViewModel = new ViewModelProvider(requireActivity()).get(OTPAuthViewModel.class);
         initViewModel = new ViewModelProvider(requireActivity()).get(InitViewModel.class);
 
@@ -87,39 +93,44 @@ public class OTPAuth extends Fragment {
         }
     }
 
+    /**
+     * initiateOTP
+     * - request for otp verification
+     * @param phoneNumber user phone number
+     */
     private void initiateOTP(String phoneNumber){
         binding.otpStatus.setVisibility(View.VISIBLE);
         otpStatus("sending OTP");
         PhoneAuthOptions options =
                 PhoneAuthOptions.newBuilder(initViewModel.getFirebaseAuth())
-                        .setPhoneNumber(phoneNumber)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(initViewModel.getInitContext())                 // Activity (for callback binding)
-                        .setCallbacks(callbacks())          // OnVerificationStateChangedCallbacks
+                        .setPhoneNumber(phoneNumber)
+                        .setTimeout(60L, TimeUnit.SECONDS)
+                        .setActivity(initViewModel.getInitContext())
+                        .setCallbacks(callbacks())
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
     }
 
+    /**
+     * Verification callbacks for PhoneAuthProvider
+     * @return
+     */
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks(){
         return new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
 
             @Override
-            public void onVerificationCompleted(PhoneAuthCredential credential) {
+            public void onVerificationCompleted(@NonNull PhoneAuthCredential credential) {
                 otpStatus("OTP verification completed");
                 signInWithPhoneAuthCredential(credential);
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
-
-                //Log.w(TAG, "onVerificationFailed", e);
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     otpStatus("OTP verification failed\n"+e.getLocalizedMessage());
                 } else if (e instanceof FirebaseTooManyRequestsException) {
-                    // The SMS quota for the project has been exceeded
                     otpStatus("OTP verification failed\n"+e.getLocalizedMessage());
                 }
-                // Show a message and update the UI
             }
 
             @Override
@@ -134,24 +145,23 @@ public class OTPAuth extends Fragment {
         };
     }
 
+    /**
+     * signInWithPhoneAuthCredential
+     * - in case phone number provided, not belongs to active device
+     *   authentication will be called manually.
+     * @param credential PhoneAuthCredential
+     */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         initViewModel.getFirebaseAuth().signInWithCredential(credential)
                 .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            //Log.d(TAG, "signInWithCredential:success");
-
                             FirebaseUser user = task.getResult().getUser();
                             otpStatus("Logging In...");
                             initViewModel.getInitContext().MainActivityIntent();
-                            // Update UI
                         } else {
-                            // Sign in failed, display a message and update the UI
-                            //Log.d(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
                                 otpStatus(task.getException().getLocalizedMessage());
                             }
                         }
@@ -159,6 +169,10 @@ public class OTPAuth extends Fragment {
                 });
     }
 
+    /**
+     * updates authentication status on OTPAuthFragment UI
+     * @param status OTPAuthentication Status message
+     */
     public void otpStatus(String status){
         binding.otpStatus.setText(status);
     }

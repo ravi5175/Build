@@ -27,5 +27,4 @@
         app:drawableStartCompat="@drawable/copy_url"
         android:drawablePadding="20dp"/>
 
-
 </LinearLayout>

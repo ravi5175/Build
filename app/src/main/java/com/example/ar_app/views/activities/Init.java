@@ -18,19 +18,23 @@ import com.example.ar_app.views.fragments.OTPAuth;
 import com.example.ar_app.views.fragments.WelcomeScreen;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Launcher Acitivity
+ *  handles User Authentication
+ */
 public class Init extends AppCompatActivity {
 
     ActivityInitBinding binding;
 
-    FragmentManager fragmentManager;
-    WelcomeScreen fWelcomeScreen;
-    OTPAuth fOTPAuth;
-    ARCam fARCam;
-    Gallery fGallery;
+    FragmentManager     fragmentManager;
+    WelcomeScreen       fWelcomeScreen;
+    OTPAuth             fOTPAuth;
+    ARCam               fARCam;
+    Gallery             fGallery;
 
-    InitViewModel initViewModel;
+    InitViewModel       initViewModel;
 
-    FirebaseAuth FAuth;
+    FirebaseAuth        FAuth;
 
 
     @Override
@@ -38,29 +42,41 @@ public class Init extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityInitBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        //Permission Check
         RunPermissionCheck();
 
+        //View Model Initializing
         initViewModel = new ViewModelProvider(this).get(InitViewModel.class);
+
+        //Firebase Auth Initializing
         FAuth = FirebaseAuth.getInstance();
 
+        //View Model Variables Update
         initViewModel.setFirebaseAuth(FAuth);
         initViewModel.setInitContext(this);
 
+        //Fragment Manager Initialising
         fragmentManager = getSupportFragmentManager();
 
-        fARCam = new ARCam();
-        fWelcomeScreen = new WelcomeScreen();
-        fOTPAuth = new OTPAuth();
-        fGallery = new Gallery();
+        //Fragments Initialising
+        fARCam          = new ARCam();
+        fWelcomeScreen  = new WelcomeScreen();
+        fOTPAuth        = new OTPAuth();
+        fGallery        = new Gallery();
 
         if(FAuth.getCurrentUser()!=null){
-            Log.d("user","user found");
+            Log.d("INIT-USER","user found");
             MainActivityIntent();
         }else{
+            Log.d("INIT-USER","user not found");
             transaction_to_Welcome();
         }
     }
 
+    /**
+     *  Fragment Transaction to OTP Auth fragment
+     */
     public void transaction_to_Auth(){
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fOTPAuth, null)
@@ -68,21 +84,31 @@ public class Init extends AppCompatActivity {
                 .setReorderingAllowed(true)
                 .commit();
     }
-
+    /**
+     *  Fragment Transaction to Welcome fragment
+     */
     public void transaction_to_Welcome(){
         fragmentManager.beginTransaction()
                 .replace(binding.initFrameLayout.getId(), fWelcomeScreen, null)
-                //.addToBackStack("fWelcome")
                 .setReorderingAllowed(true)
                 .commit();
     }
 
+    /**
+     *  Starts Main Activity
+     */
     public void MainActivityIntent(){
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
         finish();
     }
 
+    /**
+     *  Request Permissions from User for the First Time
+     *  Permissions - Internet
+     *              - Storage[Read/Write]
+     *              - Camera
+     */
     private void RunPermissionCheck() {
         String[] Permissions = {
                 Manifest.permission.INTERNET,

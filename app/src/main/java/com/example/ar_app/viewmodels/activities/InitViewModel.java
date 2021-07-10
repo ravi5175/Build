@@ -6,13 +6,17 @@ import androidx.lifecycle.ViewModel;
 import com.example.ar_app.views.activities.Init;
 import com.google.firebase.auth.FirebaseAuth;
 
+/**
+ * Init Activity View Model Class
+ */
+
+@SuppressWarnings("staticFieldLeak")
 public class InitViewModel extends ViewModel {
 
-    InitViewModel instance;
-    FirebaseAuth fAuth;
-    Init initContext;
+    FirebaseAuth fAuth = null;  //Firebase Auth Variable
+    Init initContext = null;    //Init Activity Context
 
-    MutableLiveData<String> phoneNumber = new MutableLiveData<String>();
+    MutableLiveData<String> phoneNumber = new MutableLiveData<String>(); //Phone Number String
 
     public void setInitContext(Init context){
         initContext = context;
@@ -34,5 +38,4 @@ public class InitViewModel extends ViewModel {
     public MutableLiveData<String> getPhoneNumber(){
         return phoneNumber;
     }
-
 }

@@ -26,17 +26,21 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
-
+/**
+ * Gallery Fragment
+ * - Serves as a Photo List
+ */
 public class Gallery extends Fragment {
 
-    FragmentGalleryBinding binding;
+    FragmentGalleryBinding      binding;
+
+    GalleryViewModel            galleryViewModel;
+    MainViewModel               mainViewModel;
+
+    GridLayoutManager           galleryLayoutManager;
+    GalleryRecyclerAdapter      galleryAdapter;
 
     ArrayList<ImageDownloadUrl> imageUrlList = new ArrayList<ImageDownloadUrl>();
-    GalleryViewModel galleryViewModel;
-    MainViewModel mainViewModel;
-
-    GridLayoutManager galleryLayoutManager;
-    GalleryRecyclerAdapter galleryAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState){
@@ -47,22 +51,27 @@ public class Gallery extends Fragment {
     @Override
     public void onViewCreated(View view,Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //ViewModels Initialization
         galleryViewModel = new ViewModelProvider(this).get(GalleryViewModel.class);
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 
+        //Gallery Recycler View
         galleryLayoutManager = new GridLayoutManager(requireContext(),4);
         binding.galleryRecyclerView.setLayoutManager(galleryLayoutManager);
 
         galleryAdapter = new GalleryRecyclerAdapter(imageUrlList,mainViewModel);
         binding.galleryRecyclerView.setAdapter(galleryAdapter);
 
+        //Firebase Realtime Database Image Url Observer
         mainViewModel.getDatabase().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 imageUrlList.clear();
                 for(DataSnapshot dataSnapshot : snapshot.getChildren()){
                     ImageDownloadUrl imageUrl = dataSnapshot.getValue(ImageDownloadUrl.class);
-                    Log.d("image_url",imageUrl.imageUrl);
+                    assert imageUrl != null;
+                    Log.d("GALLERY-image-url",imageUrl.imageUrl);
                     imageUrlList.add(imageUrl);
                 }
                 galleryAdapter.notifyDataSetChanged();
@@ -70,15 +79,11 @@ public class Gallery extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError error) {
-
+                Log.d("GALLERY-database-error",error.getMessage());
             }
         });
 
-        binding.backToCam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainViewModel.getMainActivityContext().transaction_to_ARCam();
-            }
-        });
+        binding.backToCam.setOnClickListener(v ->
+                mainViewModel.getMainActivityContext().transaction_to_ARCam());
     }
 }

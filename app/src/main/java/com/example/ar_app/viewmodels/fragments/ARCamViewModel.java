@@ -12,6 +12,9 @@ import com.google.ar.sceneform.ux.ArFragment;
 
 import java.util.ArrayList;
 
+/**
+ *  ARCam Fragment View Model Class
+ */
 public class ARCamViewModel extends ViewModel {
 
     public MutableLiveData<ArrayList<ARCamRecyclerChildModel>> recyclerViewData = new MutableLiveData<ArrayList<ARCamRecyclerChildModel>>(new ArrayList<ARCamRecyclerChildModel>());
@@ -19,6 +22,7 @@ public class ARCamViewModel extends ViewModel {
     public MutableLiveData<Boolean> cameraMode = new MutableLiveData<Boolean>(false);
 
     public MutableLiveData<String> modelRenderableId = new MutableLiveData<String>("toy_truck.sfb");
+
     public MutableLiveData<String> tempModelRenderableId = new MutableLiveData<String>("blank");
 
     // model renderable names with their extensions
@@ -33,7 +37,7 @@ public class ARCamViewModel extends ViewModel {
             ARCamRecyclerChildModel bulbasaur = new ARCamRecyclerChildModel(bulbasaur_id,"bulbasaur",R.drawable.bulbasaur);
             ARCamRecyclerChildModel larvitar = new ARCamRecyclerChildModel(larvitar_id,"cubone",R.drawable.cubone);
             ARCamRecyclerChildModel jigllypuff = new ARCamRecyclerChildModel(grass_patch,"jiglypuff",R.drawable.jigglypuff);
-            ARCamRecyclerChildModel weavile = new ARCamRecyclerChildModel(toy_truck_id,"weavile",R.drawable.weavile);
+            ARCamRecyclerChildModel weavile = new ARCamRecyclerChildModel(grass1_id,"weavile",R.drawable.weavile);
 
             this.recyclerViewData.getValue().add(bulbasaur);
             this.recyclerViewData.getValue().add(larvitar);
