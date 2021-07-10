@@ -15,7 +15,9 @@
     <string name="login_signup">Log in/Sign Up</string>
     <string name="phone_number">Phone Number</string>
     <string name="authenticate_button">Authenticate Button</string>
+    <string name="authenticate">Authenticate</string>
     <string name="welcome_screen_background">Welcome Screen Background</string>
+    <string name="welcome_screen_image">Welcome Screen Image</string>
 
     <!-- AUTH FRAGMENT-->
     <string name="back_to_welcome_screen_button">Back to Welcome Screen Button</string>

@@ -10,7 +10,7 @@
         android:id="@+id/ar_asset_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_margin="2dp"
+        android:layout_margin="4dp"
         android:clickable="true"
         android:background="#646464"
         android:scaleType="fitXY"/>

@@ -1,7 +1,5 @@
 package com.example.ar_app.custom_classes;
 
-import android.view.WindowManager;
-
 import com.google.ar.sceneform.ux.ArFragment;
 
 /**

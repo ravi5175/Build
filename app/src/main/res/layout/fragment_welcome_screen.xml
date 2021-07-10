@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/Theme.MaterialComponents.NoActionBar"
+    android:background="#F6D779"
+    android:theme="@style/Theme.ARAPP"
     tools:context=".views.fragments.WelcomeScreen">
 
     <TextView
@@ -16,84 +17,104 @@
         android:text="@string/welcome"
         android:textColor="#646464"
         android:textSize="40sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/ar_background"
+        android:contentDescription="@string/welcome_screen_image"/>
+
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginHorizontal="40dp"
-        android:orientation="vertical"
-        android:elevation="4dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView">
+        android:layout_height="450dp"
+        android:layout_gravity="bottom"
+        app:cardBackgroundColor="#F6D779">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="@string/login_signup"
-            android:textColor="#646464"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <com.hbb20.CountryCodePicker
-            android:id="@+id/country_code_picker"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_shape"
-            app:ccpDialog_background="@color/white"
-            app:ccpDialog_textColor="#646464" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/user_name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/phone_number"
-            android:textColorHint="#646464"
-            app:boxStrokeColor="#646464"
-            app:boxStrokeWidth="2dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone_number"
+            android:layout_height="match_parent"
+            android:background="@drawable/welcome_screen_card_layout">
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:textColor="#646464" />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="50dp"
+                android:orientation="vertical"
+                android:elevation="4dp"
+                app:layout_constraintBottom_toTopOf="@+id/imageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <ImageButton
-            android:id="@+id/authenticate"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="10dp"
-            android:contentDescription="@string/authenticate_button"
-            android:background="@drawable/ic_authenticate_button"
-            android:elevation="4dp" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/login_signup"
+                    android:textColor="#646464"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/welcome_background"
-        android:contentDescription="@string/welcome_screen_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/country_code_picker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_shape"
+                    app:ccpDialog_background="@color/white"
+                    app:ccpDialog_textColor="#646464" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/user_name"
+                    style="@style/TextInputLayoutStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/phone_number"
+                    app:boxStrokeColor="#000000"
+                    app:boxStrokeWidth="2dp">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/phone_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="number"
+                        android:textColor="#000000"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <Button
+                    android:id="@+id/authenticate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/authenticate"
+                    android:textStyle="bold"
+                    android:textColor="#646464"
+                    android:contentDescription="@string/authenticate_button"
+                    android:backgroundTint="#F6D779"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/welcome_background"
+                android:contentDescription="@string/welcome_screen_background"/>
+
+        </FrameLayout>
+
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+
+</FrameLayout>

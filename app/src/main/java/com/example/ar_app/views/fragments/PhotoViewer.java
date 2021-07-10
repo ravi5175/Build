@@ -37,6 +37,7 @@ public class PhotoViewer extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+
         //ViewModel Initialization
         mainViewModel = new ViewModelProvider(requireActivity()).get(MainViewModel.class);
 

@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F6D779"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".views.fragments.OTPAuth">
 
@@ -11,14 +12,23 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="@drawable/ic_back_button"
-        android:layout_marginTop="40dp"
-        android:layout_marginStart="30dp"
+        android:backgroundTint="@color/teal_700"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
         android:contentDescription="@string/back_to_welcome_screen_button"/>
+
+    <ImageView
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/authentication"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="130dp"
+        android:layout_marginTop="230dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/sending_otp_on_your_device"
         android:textColor="#646464"
@@ -28,7 +38,7 @@
         android:id="@+id/displayPhoneNumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="250dp"
         android:layout_gravity="center_horizontal"
         android:text="@string/display_phone_number"
         android:textColor="#646464"
@@ -42,68 +52,101 @@
      android:orientation="vertical"
      android:layout_gravity="center">
 
-     <com.mukesh.OtpView
-         android:id="@+id/otp_view"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:inputType="number"
-         android:itemBackground="@color/white"
-         android:textColor="#646464"
-         app:OtpItemCount="6"
-         app:OtpLineColor="#4CAF50"
-         app:OtpItemWidth="40dp"
-         app:OtpItemRadius="2dp"
-         app:OtpViewType="rectangle"/>
-
  </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/otp_timer_layout"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="100dp"
-        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/otp_will_expire_in"
-            android:textStyle="bold"
-            android:textColor="#646464"/>
 
-        <TextView
-            android:id="@+id/otp_timer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/black_ops_one"
-            android:text="@string/otp_timer"
-            android:textColor="#646464"
-            android:textSize="30sp"
-            android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/resend_otp"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/ic_otp_resend_button_disabled"
-            android:contentDescription="@string/resend_otp"/>
-    </LinearLayout>
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_gravity="bottom"
+        app:cardBackgroundColor="#F6D779">
 
-    <TextView
-        android:id="@+id/otp_status"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="80dp"
-        android:layout_marginHorizontal="40dp"
-        android:text="@string/otp_status"
-        android:textColor="#646464"/>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/welcome_screen_card_layout">
+
+            <com.mukesh.OtpView
+                android:id="@+id/otp_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:inputType="number"
+                android:itemBackground="@color/white"
+                android:textColor="#F6D779"
+                app:OtpItemCount="6"
+                app:OtpLineColor="#A68F48"
+                app:OtpItemWidth="40dp"
+                app:OtpItemRadius="2dp"
+                app:OtpViewType="rectangle"/>
+
+            <Button
+                android:id="@+id/resend_otp_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="74dp"
+                android:layout_marginTop="150dp"
+                android:text="Resend"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                android:enabled="false"
+                android:backgroundTint="#646464"/>
+
+            <LinearLayout
+                android:id="@+id/otp_timer_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="200dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/otp_will_expire_in"
+                    android:textStyle="bold"
+                    android:textColor="#646464"/>
+
+                <TextView
+                    android:id="@+id/otp_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="4dp"
+                    android:fontFamily="@font/black_ops_one"
+                    android:text="@string/otp_timer"
+                    android:textColor="#646464"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:visibility="gone"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/ic_otp_resend_button_disabled"
+                    android:contentDescription="@string/resend_otp"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/otp_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_marginBottom="80dp"
+                android:layout_marginHorizontal="40dp"
+                android:text="@string/otp_status"
+                android:textColor="#646464"/>
+
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+
 
 
 </FrameLayout>

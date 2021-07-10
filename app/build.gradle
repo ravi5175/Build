@@ -75,25 +75,20 @@ dependencies {
     implementation 'com.google.ar.sceneform:assets:1.15.0'
 }
 
-sceneform.asset("sampledata/toy_truck/camion jugete.obj", // 'Source Asset Path' specified during import.
-        'default',                    // 'Material Path' specified during import.
-        'sampledata/sfa/toy_truck/camion jugete.sfa', // '.sfa Output Path' specified during import.
-        'src/main/assets/toy_truck')      // '.sfb Output Path' specified during import.
-
-sceneform.asset("sampledata/larvitar/larvitar.obj",
-        'default',
-        'sampledata/sfa/larvitar/larvitar.sfa',
-        'src/main/assets/larvitar')
+sceneform.asset("sampledata/larvitar/larvitar.obj",  // 'Source Asset Path' specified during import.
+        'default',                                   // 'Material Path' specified during import.
+        'sampledata/sfa/larvitar/larvitar.sfa',      // '.sfa Output Path' specified during import.
+        'src/main/assets/larvitar')                  // '.sfb Output Path' specified during import.
 
 sceneform.asset("sampledata/bulbasaur/bulbasaur.obj",
         'default',
         'sampledata/sfa/bulbasaur/bulbasaur.sfa',
         'src/main/assets/bulbasaur')
 
-sceneform.asset("sampledata/grass1/grass1.obj",
+sceneform.asset("sampledata/grass/grass.obj",
         'default',
-        'sampledata/sfa/grass1/grass1.sfa',
-        'src/main/assets/grass1')
+        'sampledata/sfa/grass/grass.sfa',
+        'src/main/assets/grass')
 
 sceneform.asset("sampledata/grass_patch/grass_patch.obj",
         'default',

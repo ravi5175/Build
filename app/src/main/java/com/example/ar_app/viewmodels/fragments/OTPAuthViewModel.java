@@ -18,6 +18,7 @@ public class OTPAuthViewModel extends ViewModel {
 
     public MutableLiveData<String> countDown = new MutableLiveData<String>();
     public MutableLiveData<Boolean> isTimerRunning = new MutableLiveData<Boolean>(false);
+    public MutableLiveData<Boolean> resendOTPAllowed = new MutableLiveData<Boolean>(false);
 
     /**
      * function countDownTimer
@@ -36,6 +37,7 @@ public class OTPAuthViewModel extends ViewModel {
             @Override
             public void onFinish() {
                 isTimerRunning.setValue(false);
+                resendOTPAllowed.setValue(true);
             }
         };
         return tm;

@@ -15,16 +15,4 @@
         android:layout_weight="1"
         android:contentDescription="@string/photo"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginHorizontal="20dp"
-        android:gravity="center_vertical"
-        android:text="@string/url_text"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:drawableStartCompat="@drawable/copy_url"
-        android:drawablePadding="20dp"/>
-
 </LinearLayout>

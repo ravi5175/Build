@@ -2,6 +2,7 @@ package com.example.ar_app.views.fragments;
 
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.ar_app.R;
 import com.example.ar_app.adapters.GalleryRecyclerAdapter;
 import com.example.ar_app.databinding.FragmentGalleryBinding;
 import com.example.ar_app.models.ImageDownloadUrl;
@@ -85,5 +87,11 @@ public class Gallery extends Fragment {
 
         binding.backToCam.setOnClickListener(v ->
                 mainViewModel.getMainActivityContext().transaction_to_ARCam());
+    }
+
+    @Override
+    public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        //super.onMultiWindowModeChanged(isInMultiWindowMode);
+        getActivity().getWindow().setStatusBarColor(ContextCompat.getColor(requireContext(),R.color.teal_700));
     }
 }

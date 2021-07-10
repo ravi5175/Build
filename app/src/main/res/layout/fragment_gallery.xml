@@ -3,11 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".views.fragments.Gallery">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#F6D779"
         android:orientation="horizontal">
 
         <ImageView
@@ -15,7 +17,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/ic_back_button"
-            android:layout_margin="10dp"
+            android:backgroundTint="@color/teal_700"
+            android:layout_margin="20dp"
             android:contentDescription="@string/back_button"/>
 
         <TextView
@@ -35,6 +38,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="10dp"
-        android:layout_marginTop="60dp"/>
+        android:layout_marginTop="90dp"/>
 
 </FrameLayout>

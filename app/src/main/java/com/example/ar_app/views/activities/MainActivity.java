@@ -1,13 +1,17 @@
 package com.example.ar_app.views.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.example.ar_app.R;
 import com.example.ar_app.databinding.ActivityMainBinding;
 import com.example.ar_app.viewmodels.activities.MainViewModel;
 import com.example.ar_app.views.fragments.ARCam;
@@ -38,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseReference       databaseRef;
     StorageReference        storageRef;
+
+    WindowInsetsControllerCompat inset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         mainViewModel.setfAuth(FAuth);
         mainViewModel.setDatabase(databaseRef);
         mainViewModel.setStorage(storageRef);
+        inset =  new WindowInsetsControllerCompat(this.getWindow(),this.getWindow().getDecorView());
 
         transaction_to_ARCam();
 
@@ -92,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
      *  Fragment Transaction to ARCam Fragment
      */
     public void transaction_to_ARCam(){
+        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+        inset.setAppearanceLightStatusBars(false);
         fragmentManager.beginTransaction()
                 .hide(activeFragment)
                 .show(fARCam)
@@ -103,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
      *  Fragment Transaction to Gallery Fragment
      */
     public void transaction_to_Gallery(){
+        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.theme_yellow));
+        inset.setAppearanceLightStatusBars(true);
         fragmentManager.beginTransaction()
                 .hide(activeFragment)
                 .show(fGallery)
@@ -114,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
      *  Fragment Transaction to PhotoViewer Fragment
      */
     public void transaction_to_photo_viewer(){
+        this.getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+        inset.setAppearanceLightStatusBars(false);
         fragmentManager.beginTransaction()
                 .hide(activeFragment)
                 .show(fPhotoViewer)

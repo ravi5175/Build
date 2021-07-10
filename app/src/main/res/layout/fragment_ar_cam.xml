@@ -115,7 +115,8 @@
         android:id="@+id/ar_cam_recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"/>
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="4dp"/>
 
     </FrameLayout>
 

@@ -1,5 +1,7 @@
 package com.example.ar_app.views.fragments;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,22 +12,18 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.ar_app.databinding.FragmentOtpAuthBinding;
 import com.example.ar_app.viewmodels.activities.InitViewModel;
 import com.example.ar_app.viewmodels.fragments.OTPAuthViewModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.FirebaseException;
 import com.google.firebase.FirebaseTooManyRequestsException;
-import com.google.firebase.auth.AuthResult;
+
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.mukesh.OnOtpCompletionListener;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +32,7 @@ import java.util.concurrent.TimeUnit;
  * - user authentication handler
  */
 
+@SuppressWarnings("ConstantConditions")
 public class OTPAuth extends Fragment {
 
     FragmentOtpAuthBinding binding;
@@ -42,13 +41,13 @@ public class OTPAuth extends Fragment {
     InitViewModel initViewModel;
 
     @Override
-    public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
+    public View onCreateView(@NonNull LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState){
         binding = FragmentOtpAuthBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         //ViewModel Initialization
@@ -57,32 +56,40 @@ public class OTPAuth extends Fragment {
 
         binding.displayPhoneNumber.setText(initViewModel.getPhoneNumber().getValue());
 
-        binding.otpView.setOtpCompletionListener(new OnOtpCompletionListener() {
-            @Override public void onOtpCompleted(String otp) {
+        binding.otpView.setOtpCompletionListener(otp -> {
+             try{
                  PhoneAuthCredential credential = PhoneAuthProvider.getCredential(otpAuthViewModel.verificationId,otp);
                  signInWithPhoneAuthCredential(credential);
-            }
+             }catch(Exception e){
+                 otpStatus(e.getMessage());
+             }
+
         });
 
-        binding.resendOtp.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                initiateOTP(initViewModel.getPhoneNumber().getValue());
-                Toast.makeText(requireContext(), "successfully signed out", Toast.LENGTH_SHORT).show();
-            }
+        binding.resendOtpButton.setOnClickListener(v -> {
+            initiateOTP(initViewModel.getPhoneNumber().getValue());
+            otpAuthViewModel.resendOTPAllowed.setValue(false);
         });
 
-        binding.backToWelcomeScreen.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                initViewModel.getInitContext().transaction_to_Welcome();
-            }
-        });
+        binding.backToWelcomeScreen.setOnClickListener(v ->
+                initViewModel.getInitContext().transaction_to_Welcome());
 
         otpAuthViewModel.countDown.observe(getViewLifecycleOwner(), new Observer() {
             @Override
             public void onChanged(Object o) {
                 binding.otpTimer.setText(otpAuthViewModel.countDown.getValue());
+            }
+        });
+
+        otpAuthViewModel.resendOTPAllowed.observe(getViewLifecycleOwner(), change -> {
+            if(change){
+                binding.resendOtpButton.setEnabled(change);
+                binding.resendOtpButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#F6D779")));
+                binding.resendOtpButton.setTextColor(Color.parseColor("#646464"));
+            }else{
+                binding.resendOtpButton.setEnabled(change);
+                binding.resendOtpButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#646464")));
+                binding.resendOtpButton.setTextColor(Color.parseColor("#FFFFFF"));
             }
         });
 
@@ -113,7 +120,6 @@ public class OTPAuth extends Fragment {
 
     /**
      * Verification callbacks for PhoneAuthProvider
-     * @return
      */
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks(){
         return new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -125,7 +131,7 @@ public class OTPAuth extends Fragment {
             }
 
             @Override
-            public void onVerificationFailed(FirebaseException e) {
+            public void onVerificationFailed(@NonNull FirebaseException e) {
                 if (e instanceof FirebaseAuthInvalidCredentialsException) {
                     otpStatus("OTP verification failed\n"+e.getLocalizedMessage());
                 } else if (e instanceof FirebaseTooManyRequestsException) {
@@ -140,7 +146,6 @@ public class OTPAuth extends Fragment {
                 binding.otpTimerLayout.setVisibility(View.VISIBLE);
                 otpAuthViewModel.timerStart();
                 otpAuthViewModel.verificationId = verificationId;
-                //mResendToken = token;
             }
         };
     }
@@ -153,17 +158,13 @@ public class OTPAuth extends Fragment {
      */
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
         initViewModel.getFirebaseAuth().signInWithCredential(credential)
-                .addOnCompleteListener(requireActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            FirebaseUser user = task.getResult().getUser();
-                            otpStatus("Logging In...");
-                            initViewModel.getInitContext().MainActivityIntent();
-                        } else {
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                otpStatus(task.getException().getLocalizedMessage());
-                            }
+                .addOnCompleteListener(requireActivity(), task -> {
+                    if (task.isSuccessful()) {
+                        otpStatus("Logging In...");
+                        initViewModel.getInitContext().MainActivityIntent();
+                    } else {
+                        if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                            otpStatus(task.getException().getLocalizedMessage());
                         }
                     }
                 });
