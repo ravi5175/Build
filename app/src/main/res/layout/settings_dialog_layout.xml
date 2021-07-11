@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="Settings"
+        android:text="@string/Settings"
         android:textSize="20sp"
         android:textColor="#FFFFFF"
         android:background="@android:color/transparent"/>
@@ -39,15 +39,16 @@
             android:background="@android:color/transparent">
             <ImageView
                 android:layout_height="30dp"
-                android:layout_width="28dp"
+                android:layout_width="30dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/ic_log_out_button"/>
+                android:background="@drawable/ic_log_out_button"
+                android:contentDescription="@string/log_out_button"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Log Out"
+                android:text="@string/log_out"
                 android:textStyle="bold"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"/>
@@ -65,13 +66,15 @@
                 android:layout_height="26dp"
                 android:layout_width="30dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/ic_ar_mode_button"/>
+                android:background="@drawable/ic_ar_mode_button"
+                android:contentDescription="@string/ar_mode_button"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="AR mode"
+                android:layout_marginTop="4dp"
+                android:text="@string/ar_mode"
                 android:textStyle="bold"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"/>
@@ -89,13 +92,14 @@
                 android:layout_height="30dp"
                 android:layout_width="30dp"
                 android:layout_margin="10dp"
-                android:background="@drawable/ic_capture_mode_button"/>
+                android:background="@drawable/ic_capture_mode_button"
+                android:contentDescription="@string/capture_mode_button"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Capture mode"
+                android:text="@string/capture_mode"
                 android:textStyle="bold"
                 android:textSize="10sp"
                 android:textColor="#FFFFFF"/>

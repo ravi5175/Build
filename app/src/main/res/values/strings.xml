@@ -51,4 +51,12 @@
     <string name="photo">Photo</string>
     <string name="url_text">Url</string>
 
+    <!-- AR CAM SETTINGS -->
+    <string name="Settings">Settings</string>
+    <string name="log_out_button">Log Out Button</string>
+    <string name="log_out"> Log Out</string>
+    <string name="ar_mode_button">AR Mode Button</string>
+    <string name="ar_mode">AR mode</string>
+    <string name="capture_mode_button">Capture Mode Button</string>
+    <string name="capture_mode">Capture mode</string>
 </resources>
