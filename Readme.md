@@ -1,3 +1,3 @@
-# Build
+# Construct
 
-Build a Augmented Environment Around..
+Take Photographs in a Augmented Environment.
